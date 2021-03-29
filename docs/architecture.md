@@ -26,7 +26,7 @@
 └── main.tsx
 ```
 
-We are grouping our application by route/module from the start. This is a structure that supports change and growth. If it’s based on components and containers that will happen too fast.
+We are grouping our application by route/module from the start. This is a structure that supports change and growth. The point is not to have the application outgrow the architecture quickly. If it’s based on components and containers that will happen too fast.
 
 We also have a common module, we will be putting components like buttons, inputs, and cards in here. t helps to avoid duplication. You don’t want everyone on the team to make their own version of the same component.
 
