@@ -6,7 +6,8 @@ export const Table = styled('table', {
 });
 
 export const TableHead = styled('thead', {
-  backgroundColor: '#e1e3ff',
+  backgroundColor: '$royalPurple',
+  color: '$offWhite',
   '&:first-child': {
     borderRadius: '$1 0 0 $1'
   },
@@ -33,7 +34,8 @@ export const TableBody = styled('tbody', {
 export const TableRow = styled('tr', {
   cursor: 'pointer',
   '&:hover': {
-    backgroundColor: '#e1e3ff'
+    backgroundColor: '$royalPurple',
+    color: '$offWhite'
   }
 });
 

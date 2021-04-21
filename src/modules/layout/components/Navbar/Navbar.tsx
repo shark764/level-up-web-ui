@@ -14,8 +14,21 @@ import { styled } from 'stitches.config';
 const Container = styled(motion.nav, {
   display: 'flex',
   flexDirection: 'column',
-  gap: '$4',
-  padding: '$3'
+  padding: '$3',
+  borderRight: '1px solid $charcoalMedium',
+  variants: {
+    size: {
+      extended: {
+        width: 240
+      },
+      collapsed: {
+        width: 'auto'
+      }
+    }
+  },
+  defaultVariants: {
+    size: 'collapsed'
+  }
 });
 
 const NavbarToggle = styled('button', {
@@ -38,7 +51,7 @@ const NavbarToggle = styled('button', {
 const NavigationList = styled('ol', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '$4',
+  gap: '$2',
   listStyle: 'none',
   padding: 0
 });
@@ -50,14 +63,15 @@ const NavigationButton = styled(Link, {
   gap: '$3',
   padding: '$3',
   border: 'none',
-  borderRadius: '$3',
+  borderRadius: '$1',
   background: 'none',
   fontSize: '$2',
   lineHeight: 1,
+  color: '$royalPurple',
   cursor: 'pointer',
 
   '&:hover': {
-    background: '$brightGreen'
+    background: '$royalPurple'
   },
 
   '& > svg': {
@@ -68,10 +82,9 @@ const NavigationButton = styled(Link, {
   variants: {
     color: {
       active: {
-        background: '$brightGreen',
-
+        background: '$royalPurple',
         '& > svg, span': {
-          color: '$deepBlue'
+          color: '$offWhite'
         }
       },
       inactive: {
@@ -112,7 +125,7 @@ export const Navbar = () => {
   const activeRoute = active && active.path;
 
   return (
-    <Container>
+    <Container size={isCollapsed ? 'collapsed' : 'extended'}>
       <NavbarToggle onClick={() => setIsCollapsed(!isCollapsed)}>
         <HamburgerMenuIcon />
       </NavbarToggle>

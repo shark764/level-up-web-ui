@@ -28,7 +28,8 @@ const AddButton = styled('button', {
 
   '& > svg': {
     width: '16px',
-    height: '16px'
+    height: '16px',
+    color: '$offWhite'
   }
 });
 

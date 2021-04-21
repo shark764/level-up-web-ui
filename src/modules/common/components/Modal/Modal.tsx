@@ -16,7 +16,7 @@ const ModalContainer = css({
   borderRadius: '$3',
   outline: 'none',
   padding: '$4',
-  backgroundColor: '$white',
+  backgroundColor: '$charcoal',
   display: 'flex',
   flexDirection: 'column'
 });

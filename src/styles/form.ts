@@ -22,8 +22,9 @@ export const SuccessButton = styled('button', {
   all: 'unset',
   padding: '$2',
   borderRadius: '$1',
-  cursor: 'pointer',
   backgroundColor: '$brightGreen',
+  color: '$charcoal',
+  cursor: 'pointer',
 
   '&:hover': {
     backgroundColor: 'hsl(0, 0%, 90%, 0.2)'
@@ -51,7 +52,8 @@ export const Input = styled('input', {
   padding: '$3',
   marginX: '$3',
   borderRadius: '$2',
-  backgroundColor: '#e1e3ff',
+  backgroundColor: '$charcoalMedium',
+  color: '$offWhite',
 
   '&:disabled': {
     backgroundColor: 'unset',

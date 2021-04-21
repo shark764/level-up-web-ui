@@ -7,10 +7,12 @@ export const { styled, css, global, getCssString } = createCss({
       royalPurple: '#6461EC',
       brightGreen: '#50E5C3',
       magenta: '#E53176',
-      white: '#F5F9FF',
-      background: '#14162A',
-      text: '#ADB1D3',
-      textSecondary: '#C7C9D9'
+      offWhite: '#F5F9FF',
+      lightGray: '#C6D6EE',
+      mediumGray: '#9BB1D2',
+      charcoalLight: '#5DF583',
+      charcoalMedium: '#393B60',
+      charcoal: '#14162B'
     },
     fonts: {},
     fontSizes: {

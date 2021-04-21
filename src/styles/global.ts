@@ -12,8 +12,8 @@ export const useGlobalStyles = global({
     margin: 0,
     fontFamily:
       '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
-    backgroundColor: '$white',
-    color: '$deepBlue'
+    backgroundColor: '$charcoal',
+    color: '$royalPurple'
   },
   '#root': {
     height: '100%'
