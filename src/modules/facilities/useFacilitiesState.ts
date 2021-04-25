@@ -7,7 +7,6 @@ export interface Facility {
   phoneNumber: string;
   createdAt: number;
   updatedAt: number;
-  [key: string]: unknown;
 }
 
 type useFacilitiesStateHook = () => {

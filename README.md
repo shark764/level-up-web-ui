@@ -19,5 +19,5 @@ yarn dev
 
 ## TODO
 
-- Convert buttons to single Button component
+- Add proper variant names to the Button component
 - Convert heading tags to custom components with proper theme tokens.

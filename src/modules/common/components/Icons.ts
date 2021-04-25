@@ -9,5 +9,6 @@ export {
   TrashIcon,
   ChevronLeftIcon,
   PersonIcon,
-  LockClosedIcon
+  LockClosedIcon,
+  PlusIcon
 } from '@modulz/radix-icons';

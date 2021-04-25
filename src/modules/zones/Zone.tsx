@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useAuth } from '@modules/auth';
+import { useFacilitiesState } from '@modules/facilities';
 import { useForm, useQuery } from '@modules/common/hooks';
 import {
   ChevronLeftIcon,
-  Pencil1Icon,
+  UserMenu,
   TrashIcon,
-  UserMenu
+  Pencil1Icon
 } from '@modules/common/components';
 import {
   Header,
@@ -21,39 +22,46 @@ import {
 } from '@styles/page';
 import { Button } from '@styles/button';
 import { InputGroup, Input, Form, FormActions } from '@styles/form';
-import { useFacilitiesState } from './useFacilitiesState';
+import { useZonesState } from './useZonesState';
 
-export const Facility = () => {
+export const Zone = () => {
   const urlQuery = useQuery();
   const urlAction = urlQuery.get('action');
 
   const history = useHistory();
   const { id } = useParams() as { id: string };
-  const { user } = useAuth();
-  const { get, update } = useFacilitiesState();
 
-  const facility = get(id);
-  const createdDate = new Date(facility.createdAt);
-  const updatedDate = new Date(facility.updatedAt);
+  const { user } = useAuth();
+  const { get, update } = useZonesState();
+  const { facilities } = useFacilitiesState();
+
+  const zone = get(id);
+  const createdDate = new Date(zone.createdAt);
+  const updatedDate = new Date(zone.updatedAt);
 
   const [isEditing, setIsEditing] = useState(urlAction === 'edit');
   const { formData, handleInputChange } = useForm({
-    name: facility.name,
-    phoneNumber: facility.phoneNumber,
-    address: facility.address
+    facility: zone.facilityID,
+    name: zone.name,
+    description: zone.description
   });
 
-  const updateFacility = () => {
-    const { name, phoneNumber, address } = formData;
-
-    if (!name || !phoneNumber || !address) {
+  const updateZone = () => {
+    const { name, description, facility } = formData;
+    if (!name || !description || !facility) {
       return;
     }
 
     update(
-      { ...facility, name, phoneNumber, address, updatedAt: Date.now() },
+      {
+        ...zone,
+        name,
+        description,
+        updatedAt: Date.now()
+      },
       id
     );
+
     setIsEditing(false);
   };
 
@@ -61,18 +69,16 @@ export const Facility = () => {
     <>
       <Header>
         <div>
-          <Title>Facility Details</Title>
+          <Title>Zone Creation</Title>
           <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
         </div>
         <UserMenu />
       </Header>
-
       <PageContent>
         <BackButton onClick={() => history.goBack()}>
           <ChevronLeftIcon />
           Back
         </BackButton>
-
         <DetailsHeader>
           <DetailsHeaderMain>
             <ID>
@@ -97,6 +103,24 @@ export const Facility = () => {
 
         <Form onSubmit={(e) => e.preventDefault()}>
           <InputGroup>
+            <h4>Facility</h4>
+            <Input
+              as='select'
+              name='facility'
+              value={formData.facility}
+              onChange={handleInputChange}
+              disabled
+            >
+              {facilities.length > 0 &&
+                facilities.map(({ id, name }) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+            </Input>
+          </InputGroup>
+
+          <InputGroup>
             <h4>Name</h4>
             <Input
               required
@@ -108,39 +132,21 @@ export const Facility = () => {
           </InputGroup>
 
           <InputGroup>
-            <h4>Phone Number</h4>
-            <Input
-              required
-              name='phoneNumber'
-              value={formData.phoneNumber}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-            />
-          </InputGroup>
-
-          <InputGroup>
-            <h4>Address</h4>
+            <h4>Description</h4>
             <Input
               required
               type='textarea'
-              name='address'
-              value={formData.address}
+              name='description'
+              value={formData.description}
               onChange={handleInputChange}
               disabled={!isEditing}
             />
           </InputGroup>
 
           <FormActions>
-            {isEditing ? (
-              <Button color='purple' onClick={updateFacility}>
+            {isEditing && (
+              <Button color='purple' onClick={updateZone}>
                 Save
-              </Button>
-            ) : (
-              <Button
-                color='green'
-                onClick={() => history.push(`/zones?facility=${id}`)}
-              >
-                Filter Zones By This Facility
               </Button>
             )}
           </FormActions>

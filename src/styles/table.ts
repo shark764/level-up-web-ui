@@ -7,6 +7,10 @@ export const ActionButton = styled('button', {
   color: '$lightGray',
   cursor: 'pointer',
 
+  '&:hover': {
+    backgroundColor: '$royalPurple'
+  },
+
   '& svg': {
     width: 14,
     height: 14

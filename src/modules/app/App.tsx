@@ -10,8 +10,12 @@ import { useGlobalTextStyles } from '@styles/text';
 import { AuthContextProvider, Login, PrivateRoute } from '@modules/auth';
 import { Layout } from '@modules/layout';
 import { Home } from '@modules/home';
-import { Facilities, Facility } from '@modules/facilities';
-import { Zones } from '@modules/zones';
+import {
+  Facilities,
+  Facility,
+  Create as CreateFacility
+} from '@modules/facilities';
+import { Zones, Zone, Create as CreateZone } from '@modules/zones';
 import { Devices } from '@modules/devices';
 
 export const App = () => {
@@ -25,25 +29,43 @@ export const App = () => {
           <Route path='/login'>
             <Login />
           </Route>
+          {/* TODO: add private routes to an array and iterate over that */}
           <Layout>
-            <PrivateRoute exact path='/'>
-              <Home />
-            </PrivateRoute>
-            <PrivateRoute exact path='/facilities'>
-              <Facilities />
-            </PrivateRoute>
-            <PrivateRoute path='/facilities/:id'>
-              <Facility />
-            </PrivateRoute>
-            <PrivateRoute path='/zones'>
-              <Zones />
-            </PrivateRoute>
-            <PrivateRoute path='/devices'>
-              <Devices />
-            </PrivateRoute>
-            <Route path='*'>
-              <Redirect to='/' />
-            </Route>
+            <Switch>
+              <PrivateRoute exact path='/'>
+                <Home />
+              </PrivateRoute>
+              {/* Facilities */}
+              <PrivateRoute path='/facilities/create'>
+                <CreateFacility />
+              </PrivateRoute>
+              <PrivateRoute path='/facilities/:id'>
+                <Facility />
+              </PrivateRoute>
+              <PrivateRoute path='/facilities'>
+                <Facilities />
+              </PrivateRoute>
+
+              {/* Zones */}
+
+              <PrivateRoute path='/zones/create'>
+                <CreateZone />
+              </PrivateRoute>
+              <PrivateRoute path='/zones/:id'>
+                <Zone />
+              </PrivateRoute>
+              <PrivateRoute path='/zones'>
+                <Zones />
+              </PrivateRoute>
+
+              {/* Devices */}
+              <PrivateRoute path='/devices'>
+                <Devices />
+              </PrivateRoute>
+              <Route path='*'>
+                <Redirect to='/' />
+              </Route>
+            </Switch>
           </Layout>
         </Switch>
       </Router>

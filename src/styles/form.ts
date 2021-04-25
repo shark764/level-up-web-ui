@@ -24,3 +24,23 @@ export const Input = styled('input', {
     border: '1px solid transparent'
   }
 });
+
+export const Form = styled('form', {
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '32px',
+  width: '100%',
+  marginBottom: '64px',
+
+  [`& ${InputGroup}`]: {
+    flexBasis: 'calc(50% - 16px)'
+  },
+
+  [`& ${InputGroup}:nth-last-child(2)`]: {
+    flexBasis: '100%'
+  }
+});
+
+export const FormActions = styled('div', {
+  flexBasis: '100%'
+});

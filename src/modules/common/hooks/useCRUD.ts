@@ -3,7 +3,6 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 
 interface StateItem {
   id: string;
-  [key: string]: unknown;
 }
 
 export const useCRUD = (initialData: StateItem[], key: string) => {
