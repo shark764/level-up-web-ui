@@ -5,19 +5,31 @@ export interface Facility {
   name: string;
   address: string;
   phoneNumber: string;
+  createdAt: number;
+  updatedAt: number;
   [key: string]: unknown;
 }
+
+type useFacilitiesStateHook = () => {
+  facilities: Facility[];
+  get: (id: string) => Facility;
+  add: (facility: Facility) => void;
+  update: (facility: Facility, facilityId: string) => void;
+  delete: (facilityId: string) => void;
+};
 
 const initialData: Facility[] = [
   {
     id: '71de5c51-7d77-4258-8c4d-49f149ec4961',
     name: 'Test Facility',
     address: 'San Salvador, El Salvador',
-    phoneNumber: '+1 800 444 4444'
+    phoneNumber: '+1 800 444 4444',
+    createdAt: Date.now(),
+    updatedAt: Date.now()
   }
 ];
 
-export const useFacilitiesState = () => {
+export const useFacilitiesState: useFacilitiesStateHook = () => {
   const { state, add, update, delete: remove } = useCRUD(
     initialData,
     'facilities'
@@ -25,9 +37,9 @@ export const useFacilitiesState = () => {
 
   return {
     facilities: state as Facility[],
-    add: (facility: Facility) => add(facility),
-    update: (facility: Facility, facilityId: string) =>
-      update(facility, facilityId),
-    delete: (facilityId: string) => remove(facilityId)
+    get: (id) => state.find((item: Facility) => item.id === id),
+    add: (facility) => add(facility),
+    update: (facility, facilityId) => update(facility, facilityId),
+    delete: (facilityId) => remove(facilityId)
   };
 };

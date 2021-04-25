@@ -1,2 +1,3 @@
 export * from './Icons';
-export * from './Modal';
+export * from './AlertDialog';
+export * from './UserMenu';

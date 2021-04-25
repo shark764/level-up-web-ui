@@ -36,13 +36,14 @@ const NavbarToggle = styled('button', {
   marginRight: 'auto',
   padding: '$3',
   borderRadius: '$3',
+  color: '$mediumGray',
   cursor: 'pointer',
 
   '&:hover': {
     background: '$royalPurple'
   },
 
-  '& > svg': {
+  '& svg': {
     height: '16px',
     width: '16px'
   }
@@ -71,10 +72,11 @@ const NavigationButton = styled(Link, {
   cursor: 'pointer',
 
   '&:hover': {
-    background: '$royalPurple'
+    background: '$royalPurple',
+    color: '$offWhite'
   },
 
-  '& > svg': {
+  '& svg': {
     height: '16px',
     width: '16px'
   },
@@ -83,9 +85,7 @@ const NavigationButton = styled(Link, {
     color: {
       active: {
         background: '$royalPurple',
-        '& > svg, span': {
-          color: '$offWhite'
-        }
+        color: '$offWhite'
       },
       inactive: {
         background: 'none'

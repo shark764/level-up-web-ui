@@ -1,68 +1,26 @@
 import { styled } from 'stitches.config';
 
-export const ModalFooter = styled('footer', {
-  alignSelf: 'flex-end',
-  marginTop: 'auto',
-  marginBottom: 0
-});
-
-export const CancelButton = styled('button', {
-  all: 'unset',
-  padding: '$2',
-  borderRadius: '$1',
-  cursor: 'pointer',
-  '& + button': { marginLeft: '$3' },
-
-  '&:hover': {
-    backgroundColor: 'hsl(0, 0%, 20%, 0.4)'
-  }
-});
-
-export const SuccessButton = styled('button', {
-  all: 'unset',
-  padding: '$2',
-  borderRadius: '$1',
-  backgroundColor: '$brightGreen',
-  color: '$charcoal',
-  cursor: 'pointer',
-
-  '&:hover': {
-    backgroundColor: 'hsl(0, 0%, 90%, 0.2)'
-  }
-});
-
 export const InputGroup = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  '& + div': {
-    marginTop: '$4'
-  },
 
-  '& > label': {
+  '& h4': {
     fontWeight: 'bold',
-    fontSize: '$1',
-    marginBottom: '4px',
-    marginLeft: '$3'
+    marginBottom: '$1'
   }
 });
 
 export const Input = styled('input', {
   all: 'unset',
-  fontSize: '$3',
+  fontSize: '$bodyNormal',
   padding: '$3',
-  marginX: '$3',
-  borderRadius: '$2',
+  borderRadius: '$1',
+  border: '1px solid $charcoalLight',
   backgroundColor: '$charcoalMedium',
-  color: '$offWhite',
-
+  color: '$mediumGray',
   '&:disabled': {
+    paddingX: 0,
     backgroundColor: 'unset',
-    paddingX: 0
+    border: '1px solid transparent'
   }
-});
-
-export const Form = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%'
 });

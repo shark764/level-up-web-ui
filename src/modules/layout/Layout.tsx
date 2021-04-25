@@ -8,14 +8,12 @@ interface Props {
 
 const Container = styled('div', {
   display: 'flex',
-  /*  padding: '$1 $3', */
-  height: '100%',
-  gap: '$4'
+  minHeight: '100vh'
 });
 
 const Content = styled('main', {
   width: '100%',
-  padding: '$1 $4'
+  padding: '0'
 });
 
 export const Layout = ({ children }: Props) => {

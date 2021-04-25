@@ -7,9 +7,10 @@ import {
 } from 'react-router-dom';
 import { useGlobalStyles } from '@styles/global';
 import { useGlobalTextStyles } from '@styles/text';
+import { AuthContextProvider, Login, PrivateRoute } from '@modules/auth';
 import { Layout } from '@modules/layout';
 import { Home } from '@modules/home';
-import { Facilities } from '@modules/facilities';
+import { Facilities, Facility } from '@modules/facilities';
 import { Zones } from '@modules/zones';
 import { Devices } from '@modules/devices';
 
@@ -18,26 +19,34 @@ export const App = () => {
   useGlobalTextStyles();
 
   return (
-    <Router>
-      <Layout>
+    <AuthContextProvider>
+      <Router>
         <Switch>
-          <Route exact path='/'>
-            <Home />
+          <Route path='/login'>
+            <Login />
           </Route>
-          <Route path='/facilities'>
-            <Facilities />
-          </Route>
-          <Route path='/zones'>
-            <Zones />
-          </Route>
-          <Route path='/devices'>
-            <Devices />
-          </Route>
-          <Route path='*'>
-            <Redirect to='/' />
-          </Route>
+          <Layout>
+            <PrivateRoute exact path='/'>
+              <Home />
+            </PrivateRoute>
+            <PrivateRoute exact path='/facilities'>
+              <Facilities />
+            </PrivateRoute>
+            <PrivateRoute path='/facilities/:id'>
+              <Facility />
+            </PrivateRoute>
+            <PrivateRoute path='/zones'>
+              <Zones />
+            </PrivateRoute>
+            <PrivateRoute path='/devices'>
+              <Devices />
+            </PrivateRoute>
+            <Route path='*'>
+              <Redirect to='/' />
+            </Route>
+          </Layout>
         </Switch>
-      </Layout>
-    </Router>
+      </Router>
+    </AuthContextProvider>
   );
 };

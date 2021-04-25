@@ -1,110 +1,120 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useState } from 'react';
-import { PlusCircledIcon } from '@modules/common/components';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '@modules/auth';
+import {
+  Pencil1Icon,
+  TrashIcon,
+  AlertDialog,
+  UserMenu
+} from '@modules/common/components';
 import {
   Table,
   TableBody,
   TableData,
   TableRow,
   TableHeader,
-  TableHead
+  TableHead,
+  ActionButton
 } from '@styles/table';
-import { useFacilitiesState, Facility } from './useFacilitiesState';
-import { Create, Details } from './components';
-import { Header } from '@styles/text';
+import { Header, Title, SubTitle, PageContent } from '@styles/page';
+import { useFacilitiesState } from './useFacilitiesState';
 import { styled } from 'stitches.config';
 
-const AddButton = styled('button', {
+const CreateButton = styled('button', {
   all: 'unset',
-  padding: '$3',
-  borderRadius: '$round',
-  lineHeight: '16px',
-  height: '16px',
-  backgroundColor: '$magenta',
-  cursor: 'pointer',
-
-  '&:hover': {
-    backgroundColor: '#f95f9a'
-  },
-
-  '& > svg': {
-    width: '16px',
-    height: '16px',
-    color: '$offWhite'
-  }
+  padding: '$2 $3',
+  borderRadius: '$1',
+  backgroundColor: '$brightGreen',
+  color: '$charcoalMedium'
 });
 
 export const Facilities = () => {
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const { facilities, update, add } = useFacilitiesState();
-  const [selectedFacility, setSelectedFacility] = useState(
-    null as Facility | null
-  );
+  const history = useHistory();
+  const { user } = useAuth();
+  const { facilities, delete: deleteFacility } = useFacilitiesState();
+  const [showCloseDialog, setShowCloseDialog] = useState(false);
+  const [selectedFacility, setSelectedFacility] = useState('');
 
   return (
     <>
       <Header>
-        <h1>Facilities</h1>
-        <AddButton onClick={() => setIsAddOpen(true)}>
-          <PlusCircledIcon />
-        </AddButton>
+        <div>
+          <Title>Facilities</Title>
+          <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
+        </div>
+        <UserMenu />
       </Header>
-      <Table>
-        <TableHead>
-          <tr>
-            <TableHeader>Name</TableHeader>
-            <TableHeader>Address</TableHeader>
-            <TableHeader>Phone Number</TableHeader>
-          </tr>
-        </TableHead>
 
-        <TableBody>
-          {/** Super nasty hack to separate thead and tbody */}
-          <tr>
-            <td style={{ height: 16 }} />
-          </tr>
-          {facilities.map((facility) => {
-            const { id, name, address, phoneNumber } = facility;
+      <PageContent>
+        <Table>
+          <TableHead>
+            <tr>
+              <TableHeader>Name</TableHeader>
+              <TableHeader>Address</TableHeader>
+              <TableHeader>Phone Number</TableHeader>
+              <TableHeader css={{ textAlign: 'end' }}>
+                <CreateButton css={{ cursor: 'not-allowed' }}>
+                  New Facility
+                </CreateButton>
+              </TableHeader>
+            </tr>
+          </TableHead>
 
-            return (
-              <TableRow
-                key={id}
-                onClick={() => {
-                  setSelectedFacility(facility);
-                  setIsDetailsOpen(true);
-                }}
-              >
-                <TableData>{name}</TableData>
-                <TableData>{address}</TableData>
-                <TableData>{phoneNumber}</TableData>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      <Create
-        isOpen={isAddOpen}
-        create={(facility) => {
-          add(facility);
-          setIsAddOpen(false);
+          <TableBody>
+            {facilities.map((facility) => {
+              const { id, name, address, phoneNumber } = facility;
+
+              return (
+                <TableRow
+                  key={id}
+                  onClick={() => history.push(`/facilities/${id}`)}
+                >
+                  <TableData>{name}</TableData>
+                  <TableData>{address}</TableData>
+                  <TableData>{phoneNumber}</TableData>
+                  <TableData css={{ textAlign: 'end' }}>
+                    <ActionButton
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        history.push(`/facilities/${id}?action=edit`);
+                      }}
+                    >
+                      <Pencil1Icon />
+                    </ActionButton>
+                    <ActionButton
+                      color='danger'
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setSelectedFacility(id);
+                        setShowCloseDialog(true);
+                      }}
+                    >
+                      <TrashIcon />
+                    </ActionButton>
+                  </TableData>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </PageContent>
+      <AlertDialog
+        open={showCloseDialog}
+        title='Are you sure you want to delete this Facility'
+        description='Once the data is deleted it cannot be recovered'
+        color='danger'
+        icon={<TrashIcon />}
+        onCancel={() => {
+          setShowCloseDialog(false);
+          setSelectedFacility('');
         }}
-        onClose={() => setIsAddOpen(false)}
+        onAccept={() => {
+          setShowCloseDialog(false);
+          setSelectedFacility('');
+          deleteFacility(selectedFacility);
+        }}
       />
-      {isDetailsOpen && selectedFacility && (
-        <Details
-          facility={selectedFacility}
-          updateFacility={(facility, facilityId) => {
-            update(facility, facilityId);
-            setIsDetailsOpen(false);
-            setSelectedFacility(null);
-          }}
-          isOpen={isDetailsOpen && !!selectedFacility}
-          onClose={() => {
-            setIsDetailsOpen(false);
-            setSelectedFacility(null);
-          }}
-        />
-      )}
     </>
   );
 };

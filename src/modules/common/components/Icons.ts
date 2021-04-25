@@ -5,5 +5,9 @@ export {
   LightningBoltIcon as DeviceIcon,
   HamburgerMenuIcon,
   PlusCircledIcon,
-  Pencil1Icon
+  Pencil1Icon,
+  TrashIcon,
+  ChevronLeftIcon,
+  PersonIcon,
+  LockClosedIcon
 } from '@modulz/radix-icons';
