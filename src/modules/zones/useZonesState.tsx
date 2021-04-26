@@ -23,8 +23,19 @@ type useZonesStateHook = () => {
   delete: (zoneId: string) => void;
 };
 
+const initialData: Zone[] = [
+  {
+    id: 'cb14f56f-54b2-432a-a6e8-0000f9ea8c6b',
+    facilityID: '71de5c51-7d77-4258-8c4d-49f149ec4961',
+    name: 'Test Zone',
+    description: 'Test Zone Description',
+    createdAt: Date.now(),
+    updatedAt: Date.now()
+  }
+];
+
 export const useZonesState: useZonesStateHook = () => {
-  const { state, add, update, delete: remove } = useCRUD([], 'zones');
+  const { state, add, update, delete: remove } = useCRUD(initialData, 'zones');
 
   return {
     zones: state,

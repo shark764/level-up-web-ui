@@ -10,5 +10,6 @@ export {
   ChevronLeftIcon,
   PersonIcon,
   LockClosedIcon,
-  PlusIcon
+  PlusIcon,
+  ChevronDownIcon
 } from '@modulz/radix-icons';

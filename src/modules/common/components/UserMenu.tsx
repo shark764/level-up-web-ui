@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import * as Popover from '@radix-ui/react-popover';
+import { useAuth } from '@modules/auth';
 import { PersonIcon } from '@modules/common/components';
 import { styled } from 'stitches.config';
-import { useAuth } from '@modules/auth';
 
 const Avatar = styled(Popover.Trigger, {
   all: 'unset',

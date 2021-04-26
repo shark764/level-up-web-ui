@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '@modules/auth';
 import {
@@ -7,7 +6,8 @@ import {
   TrashIcon,
   AlertDialog,
   UserMenu,
-  PlusIcon
+  PlusIcon,
+  Filters
 } from '@modules/common/components';
 import {
   Table,
@@ -19,15 +19,31 @@ import {
   ActionButton
 } from '@styles/table';
 import { Button } from '@styles/button';
-import { Header, Title, SubTitle, PageContent } from '@styles/page';
+import {
+  Header,
+  Title,
+  SubTitle,
+  PageContent,
+  FiltersContainer
+} from '@styles/page';
 import { useFacilitiesState } from './useFacilitiesState';
 
 export const Facilities = () => {
   const history = useHistory();
   const { user } = useAuth();
   const { facilities, delete: deleteFacility } = useFacilitiesState();
+
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedFacility, setSelectedFacility] = useState('');
+  const [filter, setFilter] = useState('');
+  const [facilitiesFilter, setFacilitiesFilter] = useState(facilities);
+
+  useEffect(() => {
+    const filtered = facilities.filter(({ name }) =>
+      name.toLowerCase().includes(filter.toLowerCase())
+    );
+    setFacilitiesFilter(filtered);
+  }, [filter]);
 
   return (
     <>
@@ -36,6 +52,23 @@ export const Facilities = () => {
           <Title>Facilities</Title>
           <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
         </div>
+        <FiltersContainer>
+          <Filters.Root
+            content={
+              <Filters.InputGroup>
+                <label>Name</label>
+                <Filters.Input
+                  placeholder='Search Facility by Name...'
+                  value={filter}
+                  onChange={({ target: { value } }) => setFilter(value)}
+                />
+              </Filters.InputGroup>
+            }
+            onClear={() => {
+              setFilter('');
+            }}
+          />
+        </FiltersContainer>
         <UserMenu />
       </Header>
 
@@ -60,8 +93,8 @@ export const Facilities = () => {
           </TableHead>
 
           <TableBody>
-            {facilities.length > 0 &&
-              facilities.map((facility) => {
+            {facilitiesFilter.length > 0 &&
+              facilitiesFilter.map((facility) => {
                 const { id, name, address, phoneNumber } = facility;
 
                 return (

@@ -56,3 +56,8 @@ export const DetailsHeaderSecondary = styled('div', {
   gap: '$4',
   color: '$charcoalLight'
 });
+
+export const FiltersContainer = styled('div', {
+  marginLeft: 'auto',
+  marginRight: '$4'
+});

@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useAuth } from '@modules/auth';
+import { useQuery } from '@modules/common/hooks';
 import {
   Pencil1Icon,
   TrashIcon,
   AlertDialog,
   PlusIcon,
-  UserMenu
+  UserMenu,
+  Filters
 } from '@modules/common/components';
 import { useFacilitiesState } from '@modules/facilities/useFacilitiesState';
-import { Header, Title, SubTitle, PageContent } from '@styles/page';
+import {
+  Header,
+  Title,
+  SubTitle,
+  PageContent,
+  FiltersContainer
+} from '@styles/page';
 import { Button } from '@styles/button';
 import {
   Table,
@@ -23,13 +31,32 @@ import {
 import { useZonesState } from './useZonesState';
 
 export const Zones = () => {
+  const urlQuery = useQuery();
+  const facility = urlQuery.get('facility');
   const history = useHistory();
   const { user } = useAuth();
   const { zones, delete: deleteZone } = useZonesState();
-  const { get } = useFacilitiesState();
+  const { get, facilities } = useFacilitiesState();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedZone, setSelectedZone] = useState('');
 
+  const [filter, setFilter] = useState('');
+  const [facilityFilter, setFacilityFilter] = useState(
+    facility ? facility : ''
+  );
+  const [zonesFilter, setZonesFilter] = useState(zones);
+
+  useEffect(() => {
+    const facilityFiltered = facilityFilter
+      ? zones.filter(({ facilityID }) => facilityID === facilityFilter)
+      : zones;
+
+    const filtered = facilityFiltered.filter(({ name }) =>
+      name.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    setZonesFilter(filtered);
+  }, [filter, facilityFilter]);
   return (
     <>
       <Header>
@@ -37,6 +64,51 @@ export const Zones = () => {
           <Title>Zones</Title>
           <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
         </div>
+        <FiltersContainer>
+          <Filters.Root
+            content={
+              <>
+                <Filters.InputGroup>
+                  <label>Name</label>
+                  <Filters.Input
+                    placeholder='Search Zone by Name...'
+                    value={filter}
+                    onChange={({ target: { value } }) => setFilter(value)}
+                  />
+                </Filters.InputGroup>
+                <Filters.InputGroup>
+                  <label>Name</label>
+                  <Filters.Input
+                    as='select'
+                    placeholder='Search Zone by Facility...'
+                    value={facilityFilter}
+                    onChange={({ target: { value } }) => {
+                      history.push({
+                        pathname: '/zones',
+                        search: `?facility=${value}`
+                      });
+                      setFacilityFilter(value);
+                    }}
+                  >
+                    <option value='' disabled>
+                      Search Zones by Facility
+                    </option>
+                    {facilities.length > 0 &&
+                      facilities.map(({ id, name }) => (
+                        <option key={id} value={id}>
+                          {name}
+                        </option>
+                      ))}
+                  </Filters.Input>
+                </Filters.InputGroup>
+              </>
+            }
+            onClear={() => {
+              setFilter('');
+              setFacilityFilter('');
+            }}
+          />
+        </FiltersContainer>
         <UserMenu />
       </Header>
       <PageContent>
@@ -59,8 +131,8 @@ export const Zones = () => {
             </tr>
           </TableHead>
           <TableBody>
-            {zones.length > 0 &&
-              zones.map((zone) => {
+            {zonesFilter.length > 0 &&
+              zonesFilter.map((zone) => {
                 const { id, name, facilityID, description } = zone;
 
                 return (
