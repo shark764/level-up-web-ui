@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useParams } from 'react-router-dom';
 import { useAuth } from '@modules/auth';
 import { useForm, useQuery } from '@modules/common/hooks';
 import {
   ChevronLeftIcon,
   Pencil1Icon,
   TrashIcon,
-  UserMenu
+  UserMenu,
+  AlertDialog
 } from '@modules/common/components';
 import {
   Header,
@@ -30,17 +31,15 @@ export const Facility = () => {
   const history = useHistory();
   const { id } = useParams() as { id: string };
   const { user } = useAuth();
-  const { get, update } = useFacilitiesState();
-
+  const { get, update, delete: deleteFacility } = useFacilitiesState();
   const facility = get(id);
-  const createdDate = new Date(facility.createdAt);
-  const updatedDate = new Date(facility.updatedAt);
 
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isEditing, setIsEditing] = useState(urlAction === 'edit');
   const { formData, handleInputChange } = useForm({
-    name: facility.name,
-    phoneNumber: facility.phoneNumber,
-    address: facility.address
+    name: facility?.name,
+    phoneNumber: facility?.phoneNumber,
+    address: facility?.address
   });
 
   const updateFacility = () => {
@@ -57,6 +56,12 @@ export const Facility = () => {
     setIsEditing(false);
   };
 
+  if (!facility) {
+    return <Redirect to='/facilities' />;
+  }
+
+  const createdDate = new Date(facility.createdAt);
+  const updatedDate = new Date(facility.updatedAt);
   return (
     <>
       <Header>
@@ -80,7 +85,7 @@ export const Facility = () => {
               {id}
             </ID>
             {isEditing ? (
-              <Button color='danger'>
+              <Button color='danger' onClick={() => setShowDeleteDialog(true)}>
                 Delete <TrashIcon />
               </Button>
             ) : (
@@ -122,8 +127,9 @@ export const Facility = () => {
             <h4>Address</h4>
             <Input
               required
-              type='textarea'
+              as='textarea'
               name='address'
+              css={{ minHeight: 96 }}
               value={formData.address}
               onChange={handleInputChange}
               disabled={!isEditing}
@@ -146,6 +152,18 @@ export const Facility = () => {
           </FormActions>
         </Form>
       </PageContent>
+      <AlertDialog
+        open={showDeleteDialog}
+        title='Are you sure you want to delete this Facility'
+        description='Once the data is deleted it cannot be recovered'
+        color='danger'
+        icon={<TrashIcon />}
+        onCancel={() => setShowDeleteDialog(false)}
+        onAccept={async () => {
+          setShowDeleteDialog(false);
+          deleteFacility(id);
+        }}
+      />
     </>
   );
 };

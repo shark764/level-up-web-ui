@@ -20,6 +20,7 @@ export const Input = styled('input', {
   color: '$mediumGray',
   '&:disabled': {
     paddingX: 0,
+    overflow: 'hidden',
     backgroundColor: 'unset',
     border: '1px solid transparent'
   }

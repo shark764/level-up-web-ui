@@ -65,7 +65,7 @@ export const Devices = () => {
           <Title>Devices</Title>
           <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
         </div>
-        <FiltersContainer>
+        {/*  <FiltersContainer>
           <Filters.Root
             content={
               <>
@@ -109,6 +109,7 @@ export const Devices = () => {
             }}
           />
         </FiltersContainer>
+         */}
         <UserMenu />
       </Header>
       <PageContent>
@@ -160,7 +161,7 @@ export const Devices = () => {
                       <ActionButton
                         onClick={(event) => {
                           event.stopPropagation();
-                          history.push(`/zones/${id}?action=edit`);
+                          history.push(`/devices/${id}?action=edit`);
                         }}
                       >
                         <Pencil1Icon />
@@ -170,7 +171,7 @@ export const Devices = () => {
                         onClick={(event) => {
                           event.stopPropagation();
                           setSelectedDevice(id);
-                          setShowDeleteDialog(true);
+                          // setShowDeleteDialog(true);
                         }}
                       >
                         <TrashIcon />

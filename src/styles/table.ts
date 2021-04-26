@@ -27,6 +27,7 @@ export const ActionButton = styled('button', {
 
 export const Table = styled('table', {
   width: '100%',
+  tableLayout: 'fixed',
   borderCollapse: 'separate',
   borderSpacing: '0 8px'
 });
@@ -37,11 +38,12 @@ export const TableHead = styled('thead', {
 
 export const TableHeader = styled('th', {
   textAlign: 'left',
-  padding: '$3',
+  padding: '$2',
   '&:first-child': {
     borderRadius: '$1 0 0 $1'
   },
   '&:last-child': {
+    paddingX: 0,
     borderRadius: '0 $1 $1 0'
   }
 });

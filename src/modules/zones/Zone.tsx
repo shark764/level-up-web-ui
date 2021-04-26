@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useParams } from 'react-router-dom';
 import { useAuth } from '@modules/auth';
 import { useFacilitiesState } from '@modules/facilities';
 import { useForm, useQuery } from '@modules/common/hooks';
@@ -7,7 +7,8 @@ import {
   ChevronLeftIcon,
   UserMenu,
   TrashIcon,
-  Pencil1Icon
+  Pencil1Icon,
+  AlertDialog
 } from '@modules/common/components';
 import {
   Header,
@@ -32,18 +33,16 @@ export const Zone = () => {
   const { id } = useParams() as { id: string };
 
   const { user } = useAuth();
-  const { get, update } = useZonesState();
+  const { get, update, delete: deleteZone } = useZonesState();
   const { facilities } = useFacilitiesState();
-
   const zone = get(id);
-  const createdDate = new Date(zone.createdAt);
-  const updatedDate = new Date(zone.updatedAt);
 
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isEditing, setIsEditing] = useState(urlAction === 'edit');
   const { formData, handleInputChange } = useForm({
-    facility: zone.facilityID,
-    name: zone.name,
-    description: zone.description
+    facility: zone?.facilityID,
+    name: zone?.name,
+    description: zone?.description
   });
 
   const updateZone = () => {
@@ -65,11 +64,18 @@ export const Zone = () => {
     setIsEditing(false);
   };
 
+  if (!zone) {
+    return <Redirect to='/zones' />;
+  }
+
+  const createdDate = new Date(zone.createdAt);
+  const updatedDate = new Date(zone.updatedAt);
+
   return (
     <>
       <Header>
         <div>
-          <Title>Zone Creation</Title>
+          <Title>Zone Details</Title>
           <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
         </div>
         <UserMenu />
@@ -86,7 +92,7 @@ export const Zone = () => {
               {id}
             </ID>
             {isEditing ? (
-              <Button color='danger'>
+              <Button color='danger' onClick={() => setShowDeleteDialog(true)}>
                 Delete <TrashIcon />
               </Button>
             ) : (
@@ -135,8 +141,9 @@ export const Zone = () => {
             <h4>Description</h4>
             <Input
               required
-              type='textarea'
+              as='textarea'
               name='description'
+              css={{ minHeight: 96 }}
               value={formData.description}
               onChange={handleInputChange}
               disabled={!isEditing}
@@ -144,14 +151,33 @@ export const Zone = () => {
           </InputGroup>
 
           <FormActions>
-            {isEditing && (
+            {isEditing ? (
               <Button color='purple' onClick={updateZone}>
                 Save
+              </Button>
+            ) : (
+              <Button
+                color='green'
+                onClick={() => history.push(`/devices?zone=${id}`)}
+              >
+                Filter Devices By This Zone
               </Button>
             )}
           </FormActions>
         </Form>
       </PageContent>
+      <AlertDialog
+        open={showDeleteDialog}
+        title='Are you sure you want to delete this Zone'
+        description='Once the data is deleted it cannot be recovered'
+        color='danger'
+        icon={<TrashIcon />}
+        onCancel={() => setShowDeleteDialog(false)}
+        onAccept={async () => {
+          setShowDeleteDialog(false);
+          deleteZone(id);
+        }}
+      />
     </>
   );
 };

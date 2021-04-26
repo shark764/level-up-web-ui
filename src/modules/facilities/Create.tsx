@@ -77,8 +77,9 @@ export const Create = () => {
             <h4>Address</h4>
             <Input
               required
-              type='textarea'
+              as='textarea'
               name='address'
+              css={{ minHeight: 96 }}
               value={formData.address}
               onChange={handleInputChange}
             />
