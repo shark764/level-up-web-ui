@@ -7,7 +7,8 @@ import {
   HomeIcon,
   FacilityIcon,
   ZoneIcon,
-  DeviceIcon
+  DeviceIcon,
+  Logo
 } from '@modules/common/components';
 import { styled } from 'stitches.config';
 
@@ -19,7 +20,7 @@ const Container = styled(motion.nav, {
   variants: {
     size: {
       extended: {
-        width: 240
+        width: 320
       },
       collapsed: {
         width: 'auto'
@@ -31,12 +32,26 @@ const Container = styled(motion.nav, {
   }
 });
 
+const LogoContainer = styled('div', {
+  display: 'flex',
+  color: '$mediumGray',
+  fill: '$mediumGray'
+});
+
+const StyledLogo = styled(Logo, {
+  width: '100%',
+  height: 48,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+});
+
 const NavbarToggle = styled('button', {
   all: 'unset',
-  marginRight: 'auto',
+
   padding: '$3',
   borderRadius: '$3',
-  color: '$mediumGray',
+
   cursor: 'pointer',
 
   '&:hover': {
@@ -126,9 +141,16 @@ export const Navbar = () => {
 
   return (
     <Container size={isCollapsed ? 'collapsed' : 'extended'}>
-      <NavbarToggle onClick={() => setIsCollapsed(!isCollapsed)}>
-        <HamburgerMenuIcon />
-      </NavbarToggle>
+      <LogoContainer>
+        <NavbarToggle onClick={() => setIsCollapsed(!isCollapsed)}>
+          <HamburgerMenuIcon />
+        </NavbarToggle>
+        {!isCollapsed && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <StyledLogo />
+          </motion.div>
+        )}
+      </LogoContainer>
 
       <NavigationList>
         {pages.map((page) => (
