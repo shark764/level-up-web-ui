@@ -30,6 +30,9 @@ const Content = styled(Popover.Content, {
 });
 
 const FiltersContainer = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 8,
   padding: '$3'
 });
 

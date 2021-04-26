@@ -43,7 +43,7 @@ export const Facilities = () => {
       name.toLowerCase().includes(filter.toLowerCase())
     );
     setFacilitiesFilter(filtered);
-  }, [filter]);
+  }, [facilities, filter]);
 
   return (
     <>

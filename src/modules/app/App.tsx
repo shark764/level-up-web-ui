@@ -16,7 +16,7 @@ import {
   Create as CreateFacility
 } from '@modules/facilities';
 import { Zones, Zone, Create as CreateZone } from '@modules/zones';
-import { Devices } from '@modules/devices';
+import { Devices, Device, Create as CreateDevice } from '@modules/devices';
 
 export const App = () => {
   useGlobalStyles();
@@ -59,6 +59,12 @@ export const App = () => {
               </PrivateRoute>
 
               {/* Devices */}
+              <PrivateRoute path='/devices/create'>
+                <CreateDevice />
+              </PrivateRoute>
+              <PrivateRoute path='/devices/:id'>
+                <Device />
+              </PrivateRoute>
               <PrivateRoute path='/devices'>
                 <Devices />
               </PrivateRoute>

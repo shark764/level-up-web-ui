@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useAuth } from '@modules/auth';
+import { useFacilitiesState } from '@modules/facilities';
 import { useQuery } from '@modules/common/hooks';
 import {
   Pencil1Icon,
@@ -10,7 +11,7 @@ import {
   UserMenu,
   Filters
 } from '@modules/common/components';
-import { useFacilitiesState } from '@modules/facilities/useFacilitiesState';
+
 import {
   Header,
   Title,
@@ -56,7 +57,8 @@ export const Zones = () => {
     );
 
     setZonesFilter(filtered);
-  }, [filter, facilityFilter]);
+  }, [zones, filter, facilityFilter]);
+
   return (
     <>
       <Header>
@@ -77,10 +79,9 @@ export const Zones = () => {
                   />
                 </Filters.InputGroup>
                 <Filters.InputGroup>
-                  <label>Name</label>
+                  <label>Facility</label>
                   <Filters.Input
                     as='select'
-                    placeholder='Search Zone by Facility...'
                     value={facilityFilter}
                     onChange={({ target: { value } }) => {
                       history.push({
@@ -140,7 +141,9 @@ export const Zones = () => {
                     key={id}
                     onClick={() => history.push(`/zones/${id}`)}
                   >
-                    <TableData>{get(facilityID).name}</TableData>
+                    <TableData>
+                      {get(facilityID)?.name ?? 'Not available'}
+                    </TableData>
                     <TableData>{name}</TableData>
                     <TableData
                       css={{
