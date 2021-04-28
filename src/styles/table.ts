@@ -2,7 +2,7 @@ import { styled } from 'stitches.config';
 
 export const ActionButton = styled('button', {
   all: 'unset',
-  padding: '0 $1',
+  padding: '$1',
   borderRadius: 4,
   color: '$lightGray',
   cursor: 'pointer',
@@ -74,6 +74,7 @@ export const TableData = styled('td', {
     borderRadius: '$1 0 0 $1'
   },
   '&:last-child': {
+    paddingY: 0,
     borderRadius: '0 $1 $1 0'
   }
 });

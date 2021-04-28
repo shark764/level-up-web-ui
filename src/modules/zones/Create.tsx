@@ -61,6 +61,7 @@ export const Create = () => {
             <Input
               as='select'
               name='facility'
+              css={{ appearance: 'searchfield' }}
               value={formData.facility}
               onChange={handleInputChange}
             >

@@ -19,6 +19,7 @@ export const Input = styled('input', {
   backgroundColor: '$charcoalMedium',
   color: '$mediumGray',
   '&:disabled': {
+    appearance: 'none',
     paddingX: 0,
     overflow: 'hidden',
     backgroundColor: 'unset',

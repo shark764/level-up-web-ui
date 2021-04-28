@@ -82,6 +82,7 @@ export const Zones = () => {
                   <label>Facility</label>
                   <Filters.Input
                     as='select'
+                    css={{ appearance: 'searchfield' }}
                     value={facilityFilter}
                     onChange={({ target: { value } }) => {
                       history.push({
@@ -107,6 +108,9 @@ export const Zones = () => {
             onClear={() => {
               setFilter('');
               setFacilityFilter('');
+              history.push({
+                pathname: '/zones'
+              });
             }}
           />
         </FiltersContainer>
@@ -116,8 +120,8 @@ export const Zones = () => {
         <Table>
           <TableHead>
             <tr>
-              <TableHeader>Facility</TableHeader>
               <TableHeader>Name</TableHeader>
+              <TableHeader>Facility</TableHeader>
               <TableHeader>Description</TableHeader>
               <TableHeader
                 css={{ display: 'flex', justifyContent: 'flex-end' }}
@@ -141,10 +145,10 @@ export const Zones = () => {
                     key={id}
                     onClick={() => history.push(`/zones/${id}`)}
                   >
+                    <TableData>{name}</TableData>
                     <TableData>
                       {get(facilityID)?.name ?? 'Not available'}
                     </TableData>
-                    <TableData>{name}</TableData>
                     <TableData
                       css={{
                         whiteSpace: 'nowrap',

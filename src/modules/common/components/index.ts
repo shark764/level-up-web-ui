@@ -3,3 +3,4 @@ export * from './AlertDialog';
 export * from './UserMenu';
 export * as Filters from './Filters';
 export * from './Logo';
+export * from './Switch';

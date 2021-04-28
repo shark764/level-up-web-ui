@@ -3,10 +3,10 @@ import { useCRUD } from '@modules/common/hooks';
 export interface Device {
   id: string;
   zoneID: string;
-  name: string;
   code: string;
   type: string;
   softwareVersion: string;
+  status: 'Online' | 'Disabled';
   createdAt: number;
   updatedAt: number;
 }
@@ -23,11 +23,10 @@ const initialData: Device[] = [
   {
     id: 'cdba2ced-b837-4ccd-9b19-30f3ca191630',
     zoneID: 'cb14f56f-54b2-432a-a6e8-0000f9ea8c6b',
-    name: 'Test Device',
-    code: '1234',
-    type: 'test',
+    code: 'CB64728',
+    type: 'Test Type',
     softwareVersion: '0.0.1',
-
+    status: 'Online',
     createdAt: Date.now(),
     updatedAt: Date.now()
   }

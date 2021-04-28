@@ -109,10 +109,22 @@ export const Zone = () => {
 
         <Form onSubmit={(e) => e.preventDefault()}>
           <InputGroup>
+            <h4>Name</h4>
+            <Input
+              required
+              name='name'
+              value={formData.name}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+            />
+          </InputGroup>
+
+          <InputGroup>
             <h4>Facility</h4>
             <Input
               as='select'
               name='facility'
+              css={{ appearance: 'searchfield' }}
               value={formData.facility}
               onChange={handleInputChange}
               disabled
@@ -124,17 +136,6 @@ export const Zone = () => {
                   </option>
                 ))}
             </Input>
-          </InputGroup>
-
-          <InputGroup>
-            <h4>Name</h4>
-            <Input
-              required
-              name='name'
-              value={formData.name}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-            />
           </InputGroup>
 
           <InputGroup>

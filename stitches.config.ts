@@ -14,8 +14,10 @@ export const { styled, css, global, getCssString } = createCss({
       charcoalMedium: '#393B60',
       charcoal: '#14162B',
       error: '#F83f3f',
+      errorLight: '#FF7777',
       info: '#4b8ef3',
-      warning: '#FADC64'
+      warning: '#FADC64',
+      success: '#98DB55'
     },
     fontSizes: {
       bodySmall: '12px',

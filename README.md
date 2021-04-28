@@ -19,5 +19,6 @@ yarn dev
 
 ## TODO
 
-- Add proper variant names to the Button component
+- Extract tables, headers, and lists into separate components.
+- Add proper variant names to the Button component.
 - Convert heading tags to custom components with proper theme tokens.

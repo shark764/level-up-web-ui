@@ -29,6 +29,24 @@ import {
   ActionButton
 } from '@styles/table';
 import { useDevicesState } from './useDevicesState';
+import { styled } from 'stitches.config';
+
+const OnlineStatus = styled('div', {
+  width: 12,
+  height: 12,
+  borderRadius: '$round',
+  backgroundColor: '$mediumGray',
+  variants: {
+    color: {
+      online: {
+        backgroundColor: '$success'
+      },
+      disabled: {
+        backgroundColor: '$error'
+      }
+    }
+  }
+});
 
 export const Devices = () => {
   const urlQuery = useQuery();
@@ -43,6 +61,7 @@ export const Devices = () => {
   const [selectedDevice, setSelectedDevice] = useState('');
 
   const [filter, setFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
   const [zoneFilter, setZoneFilter] = useState(zone ? zone : '');
   const [devicesFilter, setDevicesFilter] = useState(devices);
 
@@ -51,12 +70,14 @@ export const Devices = () => {
       ? devices.filter(({ zoneID }) => zoneID === zoneFilter)
       : devices;
 
-    const filtered = zonesFiltered.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase())
+    const filtered = zonesFiltered.filter(
+      ({ code, type }) =>
+        code.toLowerCase().includes(filter.toLowerCase()) &&
+        type.toLowerCase().includes(typeFilter.toLowerCase())
     );
 
     setDevicesFilter(filtered);
-  }, [devices, filter, zoneFilter]);
+  }, [devices, filter, zoneFilter, typeFilter]);
 
   return (
     <>
@@ -65,22 +86,31 @@ export const Devices = () => {
           <Title>Devices</Title>
           <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
         </div>
-        {/*  <FiltersContainer>
+        <FiltersContainer>
           <Filters.Root
             content={
               <>
                 <Filters.InputGroup>
-                  <label>Name</label>
+                  <label>Code</label>
                   <Filters.Input
-                    placeholder='Search Devices by Name...'
+                    placeholder='Search Devices by Code...'
                     value={filter}
                     onChange={({ target: { value } }) => setFilter(value)}
+                  />
+                </Filters.InputGroup>
+                <Filters.InputGroup>
+                  <label>Type</label>
+                  <Filters.Input
+                    placeholder='Search Devices by Type...'
+                    value={typeFilter}
+                    onChange={({ target: { value } }) => setTypeFilter(value)}
                   />
                 </Filters.InputGroup>
                 <Filters.InputGroup>
                   <label>Zone</label>
                   <Filters.Input
                     as='select'
+                    css={{ appearance: 'searchfield' }}
                     value={zoneFilter}
                     onChange={({ target: { value } }) => {
                       history.push({
@@ -106,21 +136,23 @@ export const Devices = () => {
             onClear={() => {
               setFilter('');
               setZoneFilter('');
+              history.push({
+                pathname: '/devices'
+              });
             }}
           />
         </FiltersContainer>
-         */}
+
         <UserMenu />
       </Header>
       <PageContent>
         <Table>
           <TableHead>
             <tr>
-              <TableHeader>Zone</TableHeader>
-              <TableHeader>Name</TableHeader>
               <TableHeader>Code</TableHeader>
+              <TableHeader>Zone</TableHeader>
               <TableHeader>Type</TableHeader>
-              <TableHeader>Software Version</TableHeader>
+              <TableHeader>Status</TableHeader>
               <TableHeader
                 css={{ display: 'flex', justifyContent: 'flex-end' }}
               >
@@ -136,27 +168,27 @@ export const Devices = () => {
           <TableBody>
             {devicesFilter.length > 0 &&
               devicesFilter.map((device) => {
-                const {
-                  id,
-                  name,
-                  zoneID,
-                  code,
-                  type,
-                  softwareVersion
-                } = device;
+                const { id, zoneID, code, type, status } = device;
 
                 return (
                   <TableRow
                     key={id}
                     onClick={() => history.push(`/devices/${id}`)}
                   >
+                    <TableData>{code}</TableData>
                     <TableData>
                       {get(zoneID)?.name ?? 'Not available'}
                     </TableData>
-                    <TableData>{name}</TableData>
-                    <TableData>{code}</TableData>
+
                     <TableData>{type}</TableData>
-                    <TableData>{softwareVersion}</TableData>
+                    <TableData
+                      css={{ display: 'flex', gap: '$1', alignItems: 'center' }}
+                    >
+                      <OnlineStatus
+                        color={status === 'Disabled' ? 'disabled' : 'online'}
+                      />
+                      {status}
+                    </TableData>
                     <TableData css={{ textAlign: 'end' }}>
                       <ActionButton
                         onClick={(event) => {
@@ -171,7 +203,7 @@ export const Devices = () => {
                         onClick={(event) => {
                           event.stopPropagation();
                           setSelectedDevice(id);
-                          // setShowDeleteDialog(true);
+                          setShowDeleteDialog(true);
                         }}
                       >
                         <TrashIcon />
