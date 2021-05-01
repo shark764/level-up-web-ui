@@ -61,3 +61,13 @@ export const FiltersContainer = styled('div', {
   marginLeft: 'auto',
   marginRight: '$4'
 });
+
+export const EmptyTitle = styled('h1', {
+  color: '$royalPurple',
+  fontSize: '$display1',
+  fontWeight: 300
+});
+
+export const EmptyImage = styled('img', {
+  maxWidth: 500
+});

@@ -24,7 +24,9 @@ import {
   Title,
   SubTitle,
   PageContent,
-  FiltersContainer
+  FiltersContainer,
+  EmptyImage,
+  EmptyTitle
 } from '@styles/page';
 import { useFacilitiesState } from './useFacilitiesState';
 
@@ -44,6 +46,38 @@ export const Facilities = () => {
     );
     setFacilitiesFilter(filtered);
   }, [facilities, filter]);
+
+  if (!facilities || facilities.length === 0) {
+    return (
+      <>
+        <Header>
+          <div>
+            <Title>Facilities</Title>
+            <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
+          </div>
+          <UserMenu />
+        </Header>
+        <PageContent
+          css={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '$3'
+          }}
+        >
+          <EmptyTitle>Oops! There are no facilities yet!</EmptyTitle>
+          <EmptyImage src='/assets/img/new_entry.svg' />
+
+          <Button
+            color='green'
+            onClick={() => history.push('/facilities/create')}
+          >
+            New Facility <PlusIcon />
+          </Button>
+        </PageContent>
+      </>
+    );
+  }
 
   return (
     <>

@@ -11,13 +11,14 @@ import {
   UserMenu,
   Filters
 } from '@modules/common/components';
-
 import {
   Header,
   Title,
   SubTitle,
   PageContent,
-  FiltersContainer
+  FiltersContainer,
+  EmptyImage,
+  EmptyTitle
 } from '@styles/page';
 import { Button } from '@styles/button';
 import {
@@ -59,6 +60,90 @@ export const Zones = () => {
     setZonesFilter(filtered);
   }, [zones, filter, facilityFilter]);
 
+  const getFilters = () => (
+    <FiltersContainer>
+      <Filters.Root
+        content={
+          <>
+            <Filters.InputGroup>
+              <label>Name</label>
+              <Filters.Input
+                placeholder='Search Zone by Name...'
+                value={filter}
+                onChange={({ target: { value } }) => setFilter(value)}
+              />
+            </Filters.InputGroup>
+            <Filters.InputGroup>
+              <label>Facility</label>
+              <Filters.Input
+                as='select'
+                css={{ appearance: 'searchfield' }}
+                value={facilityFilter}
+                onChange={({ target: { value } }) => {
+                  history.push({
+                    pathname: '/zones',
+                    search: `?facility=${value}`
+                  });
+                  setFacilityFilter(value);
+                }}
+              >
+                <option value='' disabled>
+                  Search Zones by Facility
+                </option>
+                {facilities.length > 0 &&
+                  facilities.map(({ id, name }) => (
+                    <option key={id} value={id}>
+                      {name}
+                    </option>
+                  ))}
+              </Filters.Input>
+            </Filters.InputGroup>
+          </>
+        }
+        onClear={() => {
+          setFilter('');
+          setFacilityFilter('');
+          history.push({
+            pathname: '/zones'
+          });
+        }}
+      />
+    </FiltersContainer>
+  );
+
+  if (!zonesFilter || zonesFilter.length === 0) {
+    return (
+      <>
+        <Header>
+          <div>
+            <Title>Zones</Title>
+            <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
+          </div>
+          {getFilters()}
+          <UserMenu />
+        </Header>
+        <PageContent
+          css={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '$3'
+          }}
+        >
+          <EmptyTitle>
+            Oops! There are no zones {facilityFilter ? 'in this facility' : ''}{' '}
+            yet!
+          </EmptyTitle>
+          <EmptyImage src='/assets/img/new_entry.svg' />
+
+          <Button color='green' onClick={() => history.push('/zones/create')}>
+            New Zone <PlusIcon />
+          </Button>
+        </PageContent>
+      </>
+    );
+  }
+
   return (
     <>
       <Header>
@@ -66,54 +151,7 @@ export const Zones = () => {
           <Title>Zones</Title>
           <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
         </div>
-        <FiltersContainer>
-          <Filters.Root
-            content={
-              <>
-                <Filters.InputGroup>
-                  <label>Name</label>
-                  <Filters.Input
-                    placeholder='Search Zone by Name...'
-                    value={filter}
-                    onChange={({ target: { value } }) => setFilter(value)}
-                  />
-                </Filters.InputGroup>
-                <Filters.InputGroup>
-                  <label>Facility</label>
-                  <Filters.Input
-                    as='select'
-                    css={{ appearance: 'searchfield' }}
-                    value={facilityFilter}
-                    onChange={({ target: { value } }) => {
-                      history.push({
-                        pathname: '/zones',
-                        search: `?facility=${value}`
-                      });
-                      setFacilityFilter(value);
-                    }}
-                  >
-                    <option value='' disabled>
-                      Search Zones by Facility
-                    </option>
-                    {facilities.length > 0 &&
-                      facilities.map(({ id, name }) => (
-                        <option key={id} value={id}>
-                          {name}
-                        </option>
-                      ))}
-                  </Filters.Input>
-                </Filters.InputGroup>
-              </>
-            }
-            onClear={() => {
-              setFilter('');
-              setFacilityFilter('');
-              history.push({
-                pathname: '/zones'
-              });
-            }}
-          />
-        </FiltersContainer>
+        {getFilters()}
         <UserMenu />
       </Header>
       <PageContent>

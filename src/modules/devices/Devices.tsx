@@ -16,7 +16,9 @@ import {
   Title,
   SubTitle,
   PageContent,
-  FiltersContainer
+  FiltersContainer,
+  EmptyImage,
+  EmptyTitle
 } from '@styles/page';
 import { Button } from '@styles/button';
 import {
@@ -79,6 +81,97 @@ export const Devices = () => {
     setDevicesFilter(filtered);
   }, [devices, filter, zoneFilter, typeFilter]);
 
+  const getFilters = () => (
+    <FiltersContainer>
+      <Filters.Root
+        content={
+          <>
+            <Filters.InputGroup>
+              <label>Code</label>
+              <Filters.Input
+                placeholder='Search Devices by Code...'
+                value={filter}
+                onChange={({ target: { value } }) => setFilter(value)}
+              />
+            </Filters.InputGroup>
+            <Filters.InputGroup>
+              <label>Type</label>
+              <Filters.Input
+                placeholder='Search Devices by Type...'
+                value={typeFilter}
+                onChange={({ target: { value } }) => setTypeFilter(value)}
+              />
+            </Filters.InputGroup>
+            <Filters.InputGroup>
+              <label>Zone</label>
+              <Filters.Input
+                as='select'
+                css={{ appearance: 'searchfield' }}
+                value={zoneFilter}
+                onChange={({ target: { value } }) => {
+                  history.push({
+                    pathname: '/devices',
+                    search: `?zone=${value}`
+                  });
+                  setZoneFilter(value);
+                }}
+              >
+                <option value='' disabled>
+                  Search Devices by Zone
+                </option>
+                {zones.length > 0 &&
+                  zones.map(({ id, name }) => (
+                    <option key={id} value={id}>
+                      {name}
+                    </option>
+                  ))}
+              </Filters.Input>
+            </Filters.InputGroup>
+          </>
+        }
+        onClear={() => {
+          setFilter('');
+          setZoneFilter('');
+          history.push({
+            pathname: '/devices'
+          });
+        }}
+      />
+    </FiltersContainer>
+  );
+
+  if (!devicesFilter || devicesFilter.length === 0) {
+    return (
+      <>
+        <Header>
+          <div>
+            <Title>Devices</Title>
+            <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
+          </div>
+          {getFilters()}
+          <UserMenu />
+        </Header>
+        <PageContent
+          css={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '$3'
+          }}
+        >
+          <EmptyTitle>
+            Oops! There are no devices {zoneFilter ? 'in this zone' : ''} yet!
+          </EmptyTitle>
+          <EmptyImage src='/assets/img/new_entry.svg' />
+
+          <Button color='green' onClick={() => history.push('/devices/create')}>
+            New Device <PlusIcon />
+          </Button>
+        </PageContent>
+      </>
+    );
+  }
+
   return (
     <>
       <Header>
@@ -86,63 +179,7 @@ export const Devices = () => {
           <Title>Devices</Title>
           <SubTitle>{`${user.name} - ${user.role}`}</SubTitle>
         </div>
-        <FiltersContainer>
-          <Filters.Root
-            content={
-              <>
-                <Filters.InputGroup>
-                  <label>Code</label>
-                  <Filters.Input
-                    placeholder='Search Devices by Code...'
-                    value={filter}
-                    onChange={({ target: { value } }) => setFilter(value)}
-                  />
-                </Filters.InputGroup>
-                <Filters.InputGroup>
-                  <label>Type</label>
-                  <Filters.Input
-                    placeholder='Search Devices by Type...'
-                    value={typeFilter}
-                    onChange={({ target: { value } }) => setTypeFilter(value)}
-                  />
-                </Filters.InputGroup>
-                <Filters.InputGroup>
-                  <label>Zone</label>
-                  <Filters.Input
-                    as='select'
-                    css={{ appearance: 'searchfield' }}
-                    value={zoneFilter}
-                    onChange={({ target: { value } }) => {
-                      history.push({
-                        pathname: '/devices',
-                        search: `?zone=${value}`
-                      });
-                      setZoneFilter(value);
-                    }}
-                  >
-                    <option value='' disabled>
-                      Search Devices by Zone
-                    </option>
-                    {zones.length > 0 &&
-                      zones.map(({ id, name }) => (
-                        <option key={id} value={id}>
-                          {name}
-                        </option>
-                      ))}
-                  </Filters.Input>
-                </Filters.InputGroup>
-              </>
-            }
-            onClear={() => {
-              setFilter('');
-              setZoneFilter('');
-              history.push({
-                pathname: '/devices'
-              });
-            }}
-          />
-        </FiltersContainer>
-
+        {getFilters()}
         <UserMenu />
       </Header>
       <PageContent>
