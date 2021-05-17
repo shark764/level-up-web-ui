@@ -158,6 +158,7 @@ export const Navbar = () => {
             <NavigationButton
               to={page.path}
               color={activeRoute === page.path ? 'active' : 'inactive'}
+              title={page.name}
             >
               {page.icon}
               {!isCollapsed && (

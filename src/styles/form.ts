@@ -27,6 +27,40 @@ export const Input = styled('input', {
   }
 });
 
+export const Checkbox = styled('input', {
+  // all: 'unset',
+  fontSize: '$bodyNormal',
+  padding: '$3',
+  borderRadius: '$1',
+  border: '1px solid $charcoalLight',
+  backgroundColor: '$charcoalMedium',
+  color: '$mediumGray',
+  '&:disabled': {
+    appearance: 'none',
+    paddingX: 0,
+    overflow: 'hidden',
+    backgroundColor: 'unset',
+    border: '1px solid transparent'
+  }
+});
+
+export const Select = styled('select', {
+  // all: 'unset',
+  fontSize: '$bodyNormal',
+  padding: '$3',
+  borderRadius: '$1',
+  border: '1px solid $charcoalLight',
+  backgroundColor: '$charcoalMedium',
+  color: '$mediumGray',
+  '&:disabled': {
+    appearance: 'none',
+    paddingX: 0,
+    overflow: 'hidden',
+    backgroundColor: 'unset',
+    border: '1px solid transparent'
+  }
+});
+
 export const Form = styled('form', {
   display: 'flex',
   flexWrap: 'wrap',

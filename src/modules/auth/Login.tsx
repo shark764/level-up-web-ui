@@ -107,7 +107,7 @@ export const Login = () => {
   return (
     <PageContainer>
       <h1>Login</h1>
-      <form></form>
+      <form />
       <InputContainer as='div'>
         <InputIcon>
           <PersonIcon />
