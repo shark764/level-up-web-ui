@@ -1,10 +1,35 @@
 import { useCRUD } from '@modules/common/hooks';
+import { facilitiesList } from './fakeData';
 
 export interface Facility {
   id: string;
-  name: string;
+  facilityName: string;
   address: string;
-  phoneNumber: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  primaryPhoneNumber: string;
+  secondaryPhoneNumber: string;
+  facilityWebsiteUrl: string;
+  facilityType: string;
+  facilitySize: number;
+  facilityBuildingSize: number;
+  numberOfZones: number;
+  socialMedia: string;
+  socialMediaUrl: string;
+  facilityAdministratorName: string;
+  facilityAdministratorPhone: string;
+  facilityAdministratorEmail: string;
+  hoursOfOperation: string;
+  paymentInformation: string;
+  nssfMember: boolean;
+  nssfRating: number;
+  rangeIoTEnabled: boolean;
+  facilityServices: string;
+  category: string;
+  subcategory: string;
+  secuence: number;
   createdAt: number;
   updatedAt: number;
 }
@@ -17,16 +42,7 @@ type useFacilitiesStateHook = () => {
   delete: (facilityId: string) => void;
 };
 
-const initialData: Facility[] = [
-  {
-    id: '71de5c51-7d77-4258-8c4d-49f149ec4961',
-    name: 'Test Facility',
-    address: 'San Salvador, El Salvador',
-    phoneNumber: '+1 800 444 4444',
-    createdAt: Date.now(),
-    updatedAt: Date.now()
-  }
-];
+const initialData: Facility[] = [...facilitiesList];
 
 export const useFacilitiesState: useFacilitiesStateHook = () => {
   const { state, add, update, delete: remove } = useCRUD(

@@ -21,8 +21,9 @@ import {
   DetailsHeaderSecondary
 } from '@styles/page';
 import { Button } from '@styles/button';
-import { InputGroup, Input, Form, FormActions } from '@styles/form';
 import { useFacilitiesState } from './useFacilitiesState';
+import { FacilityForm } from './Form';
+import { Detail } from './Detail';
 
 export const Facility = () => {
   const urlQuery = useQuery();
@@ -36,25 +37,31 @@ export const Facility = () => {
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isEditing, setIsEditing] = useState(urlAction === 'edit');
-  const { formData, handleInputChange } = useForm({
-    name: facility?.name,
-    phoneNumber: facility?.phoneNumber,
-    address: facility?.address
-  });
 
-  const updateFacility = () => {
-    const { name, phoneNumber, address } = formData;
+  const updateFacility = async (data: any) => {
+    const { facilityName, primaryPhoneNumber, address } = data;
 
-    if (!name || !phoneNumber || !address) {
+    if (!facilityName || !primaryPhoneNumber || !address) {
       return;
     }
 
     update(
-      { ...facility, name, phoneNumber, address, updatedAt: Date.now() },
+      {
+        ...facility,
+        ...data,
+        updatedAt: Date.now()
+      },
       id
     );
     setIsEditing(false);
   };
+
+  const { formData, handleInputChange, handleSubmit } = useForm(
+    {
+      ...facility
+    },
+    updateFacility
+  );
 
   if (!facility) {
     return <Redirect to='/facilities' />;
@@ -62,6 +69,7 @@ export const Facility = () => {
 
   const createdDate = new Date(facility.createdAt);
   const updatedDate = new Date(facility.updatedAt);
+
   return (
     <>
       <Header>
@@ -100,57 +108,25 @@ export const Facility = () => {
           </DetailsHeaderSecondary>
         </DetailsHeader>
 
-        <Form onSubmit={(e) => e.preventDefault()}>
-          <InputGroup>
-            <h4>Name</h4>
-            <Input
-              required
-              name='name'
-              value={formData.name}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-            />
-          </InputGroup>
-
-          <InputGroup>
-            <h4>Phone Number</h4>
-            <Input
-              required
-              name='phoneNumber'
-              value={formData.phoneNumber}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-            />
-          </InputGroup>
-
-          <InputGroup>
-            <h4>Address</h4>
-            <Input
-              required
-              as='textarea'
-              name='address'
-              css={{ minHeight: 96 }}
-              value={formData.address}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-            />
-          </InputGroup>
-
-          <FormActions>
-            {isEditing ? (
-              <Button color='purple' onClick={updateFacility}>
-                Save
-              </Button>
-            ) : (
-              <Button
-                color='green'
-                onClick={() => history.push(`/zones?facility=${id}`)}
-              >
-                Filter Zones By This Facility
-              </Button>
-            )}
-          </FormActions>
-        </Form>
+        {isEditing ? (
+          <FacilityForm
+            formData={formData}
+            handleInputChange={handleInputChange}
+            onFormSave={handleSubmit}
+            isDisabled={!isEditing}
+            isEditing={isEditing}
+          />
+        ) : (
+          <>
+            <Detail data={formData} />
+            <Button
+              color='green'
+              onClick={() => history.push(`/zones?facility=${id}`)}
+            >
+              Filter Zones By This Facility
+            </Button>
+          </>
+        )}
       </PageContent>
       <AlertDialog
         open={showDeleteDialog}

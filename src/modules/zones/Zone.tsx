@@ -130,8 +130,8 @@ export const Zone = () => {
               disabled
             >
               {facilities.length > 0 &&
-                facilities.map(({ id, name }) => (
-                  <option key={id} value={id}>
+                facilities.map(({ id: fId, name }) => (
+                  <option key={fId} value={fId}>
                     {name}
                   </option>
                 ))}

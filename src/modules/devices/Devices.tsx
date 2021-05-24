@@ -30,8 +30,8 @@ import {
   TableHead,
   ActionButton
 } from '@styles/table';
-import { useDevicesState } from './useDevicesState';
 import { styled } from 'stitches.config';
+import { useDevicesState } from './useDevicesState';
 
 const OnlineStatus = styled('div', {
   width: 12,
@@ -64,7 +64,7 @@ export const Devices = () => {
 
   const [filter, setFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
-  const [zoneFilter, setZoneFilter] = useState(zone ? zone : '');
+  const [zoneFilter, setZoneFilter] = useState(zone || '');
   const [devicesFilter, setDevicesFilter] = useState(devices);
 
   useEffect(() => {
@@ -219,7 +219,11 @@ export const Devices = () => {
 
                     <TableData>{type}</TableData>
                     <TableData
-                      css={{ display: 'flex', gap: '$1', alignItems: 'center' }}
+                      css={{
+                        display: 'flex',
+                        gap: '$1',
+                        alignItems: 'center'
+                      }}
                     >
                       <OnlineStatus
                         color={status === 'Disabled' ? 'disabled' : 'online'}

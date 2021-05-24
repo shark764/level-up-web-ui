@@ -41,8 +41,8 @@ export const Facilities = () => {
   const [facilitiesFilter, setFacilitiesFilter] = useState(facilities);
 
   useEffect(() => {
-    const filtered = facilities.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase())
+    const filtered = facilities.filter(({ facilityName }) =>
+      facilityName.toLowerCase().includes(filter.toLowerCase())
     );
     setFacilitiesFilter(filtered);
   }, [facilities, filter]);
@@ -129,14 +129,19 @@ export const Facilities = () => {
           <TableBody>
             {facilitiesFilter.length > 0 &&
               facilitiesFilter.map((facility) => {
-                const { id, name, address, phoneNumber } = facility;
+                const {
+                  id,
+                  facilityName,
+                  address,
+                  primaryPhoneNumber
+                } = facility;
 
                 return (
                   <TableRow
                     key={id}
                     onClick={() => history.push(`/facilities/${id}`)}
                   >
-                    <TableData>{name}</TableData>
+                    <TableData>{facilityName}</TableData>
                     <TableData
                       css={{
                         whiteSpace: 'nowrap',
@@ -147,7 +152,7 @@ export const Facilities = () => {
                     >
                       {address}
                     </TableData>
-                    <TableData>{phoneNumber}</TableData>
+                    <TableData>{primaryPhoneNumber}</TableData>
                     <TableData css={{ textAlign: 'end' }}>
                       <ActionButton
                         onClick={(event) => {

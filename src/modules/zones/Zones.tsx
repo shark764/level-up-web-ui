@@ -43,9 +43,7 @@ export const Zones = () => {
   const [selectedZone, setSelectedZone] = useState('');
 
   const [filter, setFilter] = useState('');
-  const [facilityFilter, setFacilityFilter] = useState(
-    facility ? facility : ''
-  );
+  const [facilityFilter, setFacilityFilter] = useState(facility || '');
   const [zonesFilter, setZonesFilter] = useState(zones);
 
   useEffect(() => {

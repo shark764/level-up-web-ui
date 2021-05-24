@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, SyntheticEvent } from 'react';
 
-type FormData = Record<string, string>;
+type FormData = Record<string, string | number | boolean>;
 
 export const useForm = (
   initialState: FormData = {},
@@ -14,7 +14,11 @@ export const useForm = (
       | ChangeEvent<HTMLSelectElement>
       | ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value =
+      e.target.type === 'checkbox'
+        ? (e.target as HTMLInputElement).checked
+        : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
   const handleSubmit = (e: SyntheticEvent) => {

@@ -144,8 +144,8 @@ export const Device = () => {
               disabled
             >
               {zones.length > 0 &&
-                zones.map(({ id, name }) => (
-                  <option key={id} value={id}>
+                zones.map(({ id: fId, name }) => (
+                  <option key={fId} value={fId}>
                     {name}
                   </option>
                 ))}
