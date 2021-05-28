@@ -32,7 +32,10 @@ export const BackButton = styled(Button, {
 });
 
 export const ID = styled('h3', {
-  fontWeight: 'normal',
+  fontWeight: '300',
+  color: '$mediumGray',
+  fontSize: '$display2',
+  lineHeight: '$1',
   '& span': {
     fontWeight: 'bold'
   }

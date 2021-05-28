@@ -1,9 +1,78 @@
+import {
+  FacilityType,
+  PaymentMethod,
+  SocialMedia
+} from '@modules/facilities/useFacilitiesState';
 import { v4 as uuidv4 } from 'uuid';
+
+export const facilityTypes: FacilityType[] = ['Indoor', 'Outdoor', 'Both'];
+export const paymentMethods: PaymentMethod[] = [
+  'Credit Card',
+  'Bank Account',
+  'PayPal',
+  'Check'
+];
+export const facilitySocialMedias: SocialMedia[] = [
+  'Twitter',
+  'Facebook',
+  'WhatsApp',
+  'Instagram',
+  'TikTok'
+];
 
 export const uuid = () => uuidv4();
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
+export const capitalize = (s: string): string => {
+  if (typeof s !== 'string') {
+    return '';
+  }
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
+export const capitalizeAll = (s: string): string => {
+  const words = s.split(' ');
+
+  return words.map((word) => capitalize(word)).join(' ');
+};
+
+export function compareByKey(key: string, order = 'asc') {
+  return function innerSort(a: any, b: any) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (!(a.hasOwnProperty(key) && b.hasOwnProperty(key))) {
+      return 0;
+    }
+    const itemA = typeof a[key] === 'string' ? a[key].toLowerCase() : a[key];
+    const itemB = typeof b[key] === 'string' ? b[key].toLowerCase() : b[key];
+    let comparison = 0;
+    if (itemA > itemB) {
+      comparison = 1;
+    } else if (itemA < itemB) {
+      comparison = -1;
+    }
+    return order === 'desc' ? comparison * -1 : comparison;
+  };
+}
+
+export const amPm = ['AM', 'PM'];
+export const timeHours = [
+  '6:00',
+  '7:00',
+  '8:00',
+  '9:00',
+  '10:00',
+  '11:00',
+  '12:00'
+];
+const timeHoursAmPm: string[] = [];
+amPm.forEach((timePeriod) => {
+  timeHours.forEach((timeHour) => {
+    timeHoursAmPm.push(`${timeHour} ${timePeriod}`);
+  });
+});
+export { timeHoursAmPm };
 
 export const countries = [
   { name: 'Afghanistan', code: 'AF' },

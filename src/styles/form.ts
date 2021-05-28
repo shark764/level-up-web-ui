@@ -28,7 +28,6 @@ export const Input = styled('input', {
 });
 
 export const Checkbox = styled('input', {
-  // all: 'unset',
   fontSize: '$bodyNormal',
   padding: '$3',
   borderRadius: '$1',
@@ -45,7 +44,6 @@ export const Checkbox = styled('input', {
 });
 
 export const Select = styled('select', {
-  // all: 'unset',
   fontSize: '$bodyNormal',
   padding: '$3',
   borderRadius: '$1',
@@ -59,6 +57,49 @@ export const Select = styled('select', {
     backgroundColor: 'unset',
     border: '1px solid transparent'
   }
+});
+
+export const SwitchFieldLabel = styled('label', {
+  backgroundColor: '$charcoal',
+  color: '$lightGray',
+  fontSize: '$bodyNormal',
+  lineHeight: '$1',
+  textAlign: 'center',
+  marginRight: '-1px',
+  border: '1px solid $charcoalLight',
+  boxShadow:
+    'inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1)',
+  transition: 'all 0.1s ease-in-out',
+  padding: '$3 $5',
+  flex: 1,
+
+  '&:hover': {
+    cursor: 'pointer'
+  },
+
+  '&:first-of-type': {
+    borderRadius: '$1 0 0 $1'
+  },
+
+  '&:last-of-type': {
+    borderRadius: '0 $1 $1 0'
+  }
+});
+export const SwitchFieldInput = styled('input', {
+  position: 'absolute',
+  clip: 'rect(0, 0, 0, 0)',
+  height: '1px',
+  width: '1px',
+  border: '0',
+
+  [`&:checked + ${SwitchFieldLabel}`]: {
+    backgroundColor: '$charcoalLight',
+    boxShadow: 'none'
+  }
+});
+export const SwitchField = styled('div', {
+  display: 'flex',
+  flexGrow: 1
 });
 
 export const Form = styled('form', {

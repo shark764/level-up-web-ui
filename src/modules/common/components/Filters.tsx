@@ -62,16 +62,14 @@ export const Input = styled('input', {
   color: '$mediumGray'
 });
 
-export const Root = ({ content, onClear }: Props) => {
-  return (
-    <Popover.Root>
-      <Trigger>
-        Filters <ChevronDownIcon />
-      </Trigger>
-      <Content>
-        <FiltersContainer>{content}</FiltersContainer>
-        <Footer onClick={onClear}>Clear</Footer>
-      </Content>
-    </Popover.Root>
-  );
-};
+export const Root = ({ content, onClear }: Props) => (
+  <Popover.Root>
+    <Trigger>
+      Filters <ChevronDownIcon />
+    </Trigger>
+    <Content>
+      <FiltersContainer>{content}</FiltersContainer>
+      <Footer onClick={onClear}>Clear</Footer>
+    </Content>
+  </Popover.Root>
+);

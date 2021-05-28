@@ -1,4 +1,5 @@
 export {
+  Cross2Icon,
   HomeIcon,
   SewingPinFilledIcon as FacilityIcon,
   Crosshair1Icon as ZoneIcon,
@@ -11,5 +12,17 @@ export {
   PersonIcon,
   LockClosedIcon,
   PlusIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  StarIcon,
+  StarFilledIcon,
+  MagnifyingGlassIcon,
+  ExclamationTriangleIcon
 } from '@modulz/radix-icons';
+
+export * from './icons';
+
+export interface IIcon {
+  fill?: string;
+  width?: number;
+  height?: number;
+}

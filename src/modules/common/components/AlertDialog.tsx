@@ -7,10 +7,13 @@ interface Props {
   open: boolean;
   icon: ReactNode;
   title: string;
+  titleColor?: 'danger' | 'warning' | 'default';
   description: string;
   color?: 'danger' | 'warning';
   onCancel: () => void;
   onAccept: () => void;
+  cancelText?: string;
+  acceptText?: string;
 }
 
 const Overlay = styled(Alert.Overlay, {
@@ -29,12 +32,13 @@ const Content = styled(Alert.Content, {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 'auto',
-  backgroundColor: '$charcoal',
+  backgroundColor: '$charcoalMedium',
   borderRadius: '$1',
   padding: '$4 64px',
   display: 'flex',
   flexDirection: 'column',
-  textAlign: 'center'
+  textAlign: 'center',
+  maxWidth: 600
 });
 
 const IconContainer = styled('div', {
@@ -44,6 +48,19 @@ const IconContainer = styled('div', {
   },
   variants: {
     color: {
+      danger: {
+        color: '$error'
+      },
+      warning: {
+        color: '$warning'
+      }
+    }
+  }
+});
+const Title = styled(Alert.Title, {
+  variants: {
+    color: {
+      default: { color: '$offWhite' },
       danger: {
         color: '$error'
       },
@@ -64,26 +81,27 @@ const Actions = styled('div', {
 export const AlertDialog = ({
   open,
   title,
+  titleColor = 'default',
   description,
   icon,
   color = 'warning',
   onCancel,
-  onAccept
-}: Props) => {
-  return (
-    <Alert.Root open={open}>
-      <Overlay />
-      <Content>
-        <IconContainer color={color}>{icon}</IconContainer>
-        <Alert.Title>{title}</Alert.Title>
-        <Alert.Description>{description}</Alert.Description>
-        <Actions>
-          <Button onClick={onCancel}>Cancel</Button>
-          <Button color='danger' onClick={onAccept}>
-            Accept
-          </Button>
-        </Actions>
-      </Content>
-    </Alert.Root>
-  );
-};
+  onAccept,
+  cancelText = 'Cancel',
+  acceptText = 'Accept'
+}: Props) => (
+  <Alert.Root open={open}>
+    <Overlay />
+    <Content>
+      <IconContainer color={color}>{icon}</IconContainer>
+      <Title color={titleColor}>{title}</Title>
+      <Alert.Description>{description}</Alert.Description>
+      <Actions>
+        <Button onClick={onCancel}>{cancelText}</Button>
+        <Button color='danger' onClick={onAccept}>
+          {acceptText}
+        </Button>
+      </Actions>
+    </Content>
+  </Alert.Root>
+);

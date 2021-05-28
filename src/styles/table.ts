@@ -12,8 +12,8 @@ export const ActionButton = styled('button', {
   },
 
   '& svg': {
-    width: 14,
-    height: 14
+    width: 21,
+    height: 21
   },
 
   variants: {

@@ -31,6 +31,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
+    'arrow-body-style': ['error', 'as-needed'],
     'no-param-reassign': ['warn', { props: false }],
     'no-unused-vars': 'warn',
     'no-plusplus': 'warn',

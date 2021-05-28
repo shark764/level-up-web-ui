@@ -4,10 +4,9 @@ import { useAuth } from '@modules/auth';
 import { useForm, useQuery } from '@modules/common/hooks';
 import {
   ChevronLeftIcon,
-  Pencil1Icon,
-  TrashIcon,
   UserMenu,
-  AlertDialog
+  AlertDialog,
+  TrashCircleIcon
 } from '@modules/common/components';
 import {
   Header,
@@ -20,10 +19,8 @@ import {
   DetailsHeaderMain,
   DetailsHeaderSecondary
 } from '@styles/page';
-import { Button } from '@styles/button';
 import { useFacilitiesState } from './useFacilitiesState';
 import { FacilityForm } from './Form';
-import { Detail } from './Detail';
 
 export const Facility = () => {
   const urlQuery = useQuery();
@@ -86,54 +83,37 @@ export const Facility = () => {
           Back
         </BackButton>
 
-        <DetailsHeader>
+        <DetailsHeader css={{ marginBottom: '$2' }}>
           <DetailsHeaderMain>
             <ID>
               <span>ID: </span>
               {id}
             </ID>
-            {isEditing ? (
-              <Button color='danger' onClick={() => setShowDeleteDialog(true)}>
-                Delete <TrashIcon />
-              </Button>
-            ) : (
-              <Button color='purple' onClick={() => setIsEditing(true)}>
-                Edit <Pencil1Icon />
-              </Button>
-            )}
           </DetailsHeaderMain>
-          <DetailsHeaderSecondary>
-            <p>Created: {createdDate.toDateString()}</p>
-            <p>Updated: {updatedDate.toDateString()}</p>
+          <DetailsHeaderSecondary css={{ display: 'block' }}>
+            <p>Creation Time: {createdDate.toDateString()}</p>
+            <p>Last Update: {updatedDate.toDateString()}</p>
           </DetailsHeaderSecondary>
         </DetailsHeader>
 
-        {isEditing ? (
+        {isEditing && (
           <FacilityForm
             formData={formData}
             handleInputChange={handleInputChange}
             onFormSave={handleSubmit}
             isDisabled={!isEditing}
             isEditing={isEditing}
+            onDelete={() => setShowDeleteDialog(true)}
           />
-        ) : (
-          <>
-            <Detail data={formData} />
-            <Button
-              color='green'
-              onClick={() => history.push(`/zones?facility=${id}`)}
-            >
-              Filter Zones By This Facility
-            </Button>
-          </>
         )}
       </PageContent>
       <AlertDialog
         open={showDeleteDialog}
-        title='Are you sure you want to delete this Facility'
+        title='Are you sure you want to delete this Facility?'
+        titleColor='danger'
         description='Once the data is deleted it cannot be recovered'
         color='danger'
-        icon={<TrashIcon />}
+        icon={<TrashCircleIcon fill='#F83f3f' />}
         onCancel={() => setShowDeleteDialog(false)}
         onAccept={async () => {
           setShowDeleteDialog(false);

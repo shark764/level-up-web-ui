@@ -10,7 +10,7 @@ export const { styled, css, global, getCssString } = createCss({
       magenta: '#E53176',
       lightGray: '#C6D6EE',
       mediumGray: '#9BB1D2',
-      charcoalLight: '#5D5F83;',
+      charcoalLight: '#5D5F83',
       charcoalMedium: '#393B60',
       charcoal: '#14162B',
       error: '#F83f3f',
@@ -20,23 +20,28 @@ export const { styled, css, global, getCssString } = createCss({
       success: '#98DB55'
     },
     fontSizes: {
+      bodyXSmall: '8px',
       bodySmall: '12px',
       bodyNormal: '14px',
       bodyMedium: '16px',
       bodyLarge: '18px',
       display1: '40px',
-      display2: '32px'
+      display2: '32px',
+      heading3: '20px'
     },
     space: {
       1: '8px',
       2: '12px',
       3: '16px',
-      4: '32px'
+      4: '32px',
+      5: '48px',
+      6: '64px'
     },
     lineHeights: {
       1: 1.3,
       2: 1.5,
-      3: 1.7
+      3: 1.7,
+      4: 2.5
     },
     radii: {
       1: '8px',

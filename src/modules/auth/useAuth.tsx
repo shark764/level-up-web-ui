@@ -33,19 +33,17 @@ const useAuthProvider = () => {
     'auth:user'
   );
 
-  const signIn = (username: string, callback: () => void) => {
-    return authMethods.signIn(() => {
+  const signIn = (username: string, callback: () => void) =>
+    authMethods.signIn(() => {
       setUser({ id: 'TODO', name: username, role: 'Super-Admin' });
       callback();
     });
-  };
 
-  const signOut = (callback: () => void) => {
-    return authMethods.signOut(() => {
+  const signOut = (callback: () => void) =>
+    authMethods.signOut(() => {
       setUser({ id: '', name: '', role: '' });
       callback();
     });
-  };
 
   return {
     isAuthenticated: !!user.id && !!user.name,
