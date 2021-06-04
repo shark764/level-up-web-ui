@@ -26,7 +26,7 @@ export const BackButton = styled(Button, {
   gap: '$3',
   padding: 0,
   background: 'none',
-  color: '$royalPurple',
+  color: '$brightGreen',
   cursor: 'pointer',
   fontSize: '$bodyLarge'
 });
