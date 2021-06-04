@@ -16,11 +16,9 @@ const Content = styled('main', {
   padding: '0'
 });
 
-export const Layout = ({ children }: Props) => {
-  return (
-    <Container>
-      <Navbar />
-      <Content>{children}</Content>
-    </Container>
-  );
-};
+export const Layout = ({ children }: Props) => (
+  <Container>
+    <Navbar />
+    <Content>{children}</Content>
+  </Container>
+);

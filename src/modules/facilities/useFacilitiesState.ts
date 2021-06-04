@@ -1,35 +1,78 @@
 import { useCRUD } from '@modules/common/hooks';
 import { facilitiesList } from './fakeData';
 
+export type FacilityType = 'Indoor' | 'Outdoor' | 'Both';
+export type SocialMedia =
+  | 'Twitter'
+  | 'Facebook'
+  | 'WhatsApp'
+  | 'Instagram'
+  | 'TikTok';
+export type FacilitySocialMedia = {
+  socialMedia: SocialMedia;
+  socialMediaUrl: string;
+};
+export type PaymentMethod = 'Credit Card' | 'Bank Account' | 'PayPal' | 'Check';
+
+export type RetailSalesDetail = {
+  unrestrictedItems: string[];
+  restrictedItems: string[];
+};
+export type CafeteriaDetail = {
+  size: number;
+  food: boolean;
+  beverage: boolean;
+  alcohol: boolean;
+  snacks: boolean;
+  vendingMachines: boolean;
+};
+export type TrainingClassesDetail = {
+  youthPrograms: string[];
+  privateInstruction: string[];
+};
+export type RangeEquipmentDetail = {
+  airFiltering: boolean;
+  airFilteringManufacturers: string[];
+  carriers: boolean;
+  carriersManufacturers: string[];
+  stalls: boolean;
+  stallsManufacturers: string[];
+  virtualExperience: boolean;
+  virtualExperienceManufacturers: string[];
+};
+
 export interface Facility {
   id: string;
   facilityName: string;
   address: string;
-  city: string;
-  state: string;
-  zip: string;
-  country: string;
   primaryPhoneNumber: string;
   secondaryPhoneNumber: string;
   facilityWebsiteUrl: string;
-  facilityType: string;
-  facilitySize: number;
-  facilityBuildingSize: number;
-  numberOfZones: number;
-  socialMedia: string;
-  socialMediaUrl: string;
+  facilityType: FacilityType;
+  socialMedia: FacilitySocialMedia[];
   facilityAdministratorName: string;
   facilityAdministratorPhone: string;
   facilityAdministratorEmail: string;
-  hoursOfOperation: string;
-  paymentInformation: string;
+  hoursOfOperation: { opening: string; closing: string };
+  paymentInformation: PaymentMethod[];
   nssfMember: boolean;
   nssfRating: number;
   rangeIoTEnabled: boolean;
-  facilityServices: string;
-  category: string;
-  subcategory: string;
-  secuence: number;
+  rangeMembership: boolean;
+  walkInRangeUsers: boolean;
+  firearmsRentals: boolean;
+  retailSales: boolean;
+  retailSalesDetail: RetailSalesDetail;
+  cafeteria: boolean;
+  cafeteriaDetail: CafeteriaDetail;
+  trainingClasses: boolean;
+  trainingClassesDetail: TrainingClassesDetail;
+  events: boolean;
+  eventList: string[];
+  corporateHospitality: boolean;
+  rangeEquipment: boolean;
+  rangeEquipmentDetail: RangeEquipmentDetail;
+  organizedCompetition: boolean;
   createdAt: number;
   updatedAt: number;
 }

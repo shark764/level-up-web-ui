@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, SyntheticEvent } from 'react';
 
-type FormData = Record<string, string | number | boolean>;
+type FormData = Record<string, string | number | boolean | [] | any>;
 
 export const useForm = (
   initialState: FormData = {},
