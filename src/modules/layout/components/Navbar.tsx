@@ -32,6 +32,8 @@ const Container = styled(motion.nav, {
   }
 });
 
+const StickyContainer = styled('div', { position: 'sticky', top: '$3' });
+
 const LogoContainer = styled('div', {
   display: 'flex',
   color: '$mediumGray',
@@ -141,38 +143,40 @@ export const Navbar = () => {
 
   return (
     <Container size={isCollapsed ? 'collapsed' : 'extended'}>
-      <LogoContainer>
-        <NavbarToggle onClick={() => setIsCollapsed(!isCollapsed)}>
-          <HamburgerMenuIcon />
-        </NavbarToggle>
-        {!isCollapsed && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <StyledLogo />
-          </motion.div>
-        )}
-      </LogoContainer>
+      <StickyContainer>
+        <LogoContainer>
+          <NavbarToggle onClick={() => setIsCollapsed(!isCollapsed)}>
+            <HamburgerMenuIcon />
+          </NavbarToggle>
+          {!isCollapsed && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <StyledLogo />
+            </motion.div>
+          )}
+        </LogoContainer>
 
-      <NavigationList>
-        {pages.map((page) => (
-          <li key={page.name}>
-            <NavigationButton
-              to={page.path}
-              color={activeRoute === page.path ? 'active' : 'inactive'}
-              title={page.name}
-            >
-              {page.icon}
-              {!isCollapsed && (
-                <NavigationLabel
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
-                  {page.name}
-                </NavigationLabel>
-              )}
-            </NavigationButton>
-          </li>
-        ))}
-      </NavigationList>
+        <NavigationList>
+          {pages.map((page) => (
+            <li key={page.name}>
+              <NavigationButton
+                to={page.path}
+                color={activeRoute === page.path ? 'active' : 'inactive'}
+                title={page.name}
+              >
+                {page.icon}
+                {!isCollapsed && (
+                  <NavigationLabel
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    {page.name}
+                  </NavigationLabel>
+                )}
+              </NavigationButton>
+            </li>
+          ))}
+        </NavigationList>
+      </StickyContainer>
     </Container>
   );
 };

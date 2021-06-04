@@ -1,34 +1,35 @@
-import React, { useState } from 'react';
+/* eslint-disable radix */
+import React, { useState, useRef } from 'react';
 import { Redirect, useHistory, useParams } from 'react-router-dom';
+import Konva from 'konva';
 import { useAuth } from '@modules/auth';
 import { useFacilitiesState } from '@modules/facilities';
-import { useForm, useQuery } from '@modules/common/hooks';
+import { useForm } from '@modules/common/hooks';
+import { Designer } from '@modules/zone-designer';
 import {
   ChevronLeftIcon,
   UserMenu,
   TrashIcon,
-  Pencil1Icon,
   AlertDialog
 } from '@modules/common/components';
-import {
-  Header,
-  Title,
-  SubTitle,
-  PageContent,
-  BackButton,
-  ID,
-  DetailsHeader,
-  DetailsHeaderMain,
-  DetailsHeaderSecondary
-} from '@styles/page';
+import { Header, Title, SubTitle, PageContent, BackButton } from '@styles/page';
 import { Button } from '@styles/button';
-import { InputGroup, Input, Form, FormActions } from '@styles/form';
+import { Input as BaseInput } from '@styles/form';
+import {
+  SplitPane,
+  Form,
+  Input,
+  ReadOnlyInput,
+  PageTitle,
+  InputGroup,
+  DesignerContainer,
+  DesignerSizeControls,
+  FormActions
+} from './styles';
 import { useZonesState } from './useZonesState';
+import type { DesignerItem } from '@modules/zone-designer/types';
 
 export const Zone = () => {
-  const urlQuery = useQuery();
-  const urlAction = urlQuery.get('action');
-
   const history = useHistory();
   const { id } = useParams() as { id: string };
 
@@ -37,39 +38,56 @@ export const Zone = () => {
   const { facilities } = useFacilitiesState();
   const zone = get(id);
 
+  // Zone Designer
+  // I'm sorry
+  const canvasRef = useRef<Konva.Stage>(null);
+  const [zoneRows, setZoneRows] = useState(zone?.rows ?? 0);
+  const [zoneColumns, setZoneColumns] = useState(zone?.columns ?? 0);
+  const [zoneItems, setZoneItems] = useState(
+    zone?.diagram || ([] as DesignerItem[])
+  );
+
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [isEditing, setIsEditing] = useState(urlAction === 'edit');
   const { formData, handleInputChange } = useForm({
     facility: zone?.facilityID,
-    name: zone?.name,
-    description: zone?.description
+    name: zone?.name
   });
 
-  const updateZone = () => {
-    const { name, description, facility } = formData;
-    if (!name || !description || !facility) {
+  const updateZone = async () => {
+    const { name, facility } = formData;
+    if (!name || !facility) {
       return;
     }
 
-    update(
+    await update(
       {
         ...zone,
-        name,
-        description,
+        name: name.toString(),
+        rows: zoneRows,
+        columns: zoneColumns,
+        diagram: zoneItems,
+        diagramImg: canvasRef.current?.toDataURL({ pixelRatio: 2 }) ?? '',
         updatedAt: Date.now()
       },
       id
     );
 
-    setIsEditing(false);
+    history.push('/zones');
   };
 
-  if (!zone) {
+  if (!zone || !zone.id) {
     return <Redirect to='/zones' />;
   }
 
-  const createdDate = new Date(zone.createdAt);
-  const updatedDate = new Date(zone.updatedAt);
+  const lanes = zoneItems
+    ? zoneItems.filter((item) => item.type === 'lane').length
+    : 0;
+  const displays = zoneItems
+    ? zoneItems.filter((item) => item.type === 'display').length
+    : 0;
+  const targets = zoneItems
+    ? zoneItems.filter((item) => item.type === 'target').length
+    : 0;
 
   return (
     <>
@@ -85,87 +103,100 @@ export const Zone = () => {
           <ChevronLeftIcon />
           Back
         </BackButton>
-        <DetailsHeader>
-          <DetailsHeaderMain>
-            <ID>
-              <span>ID: </span>
-              {id}
-            </ID>
-            {isEditing ? (
-              <Button color='danger' onClick={() => setShowDeleteDialog(true)}>
-                Delete <TrashIcon />
-              </Button>
-            ) : (
-              <Button color='purple' onClick={() => setIsEditing(true)}>
-                Edit <Pencil1Icon />
-              </Button>
-            )}
-          </DetailsHeaderMain>
-          <DetailsHeaderSecondary>
-            <p>Created: {createdDate.toDateString()}</p>
-            <p>Updated: {updatedDate.toDateString()}</p>
-          </DetailsHeaderSecondary>
-        </DetailsHeader>
 
-        <Form onSubmit={(e) => e.preventDefault()}>
-          <InputGroup>
-            <h4>Name</h4>
-            <Input
-              required
-              name='name'
-              value={formData.name}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-            />
-          </InputGroup>
+        <SplitPane>
+          <Form onSubmit={(e) => e.preventDefault()}>
+            <PageTitle>Zone Details</PageTitle>
 
-          <InputGroup>
-            <h4>Facility</h4>
-            <Input
-              as='select'
-              name='facility'
-              css={{ appearance: 'searchfield' }}
-              value={formData.facility}
-              onChange={handleInputChange}
-              disabled
-            >
-              {facilities.length > 0 &&
-                facilities.map(({ id: fId, name }) => (
-                  <option key={fId} value={fId}>
-                    {name}
-                  </option>
-                ))}
-            </Input>
-          </InputGroup>
+            <InputGroup>
+              <label>Name</label>
+              <Input
+                required
+                name='name'
+                type='text'
+                value={formData.name.toString()}
+                onChange={handleInputChange}
+              />
+            </InputGroup>
+            <InputGroup>
+              <label>Facility</label>
+              <Input
+                as='select'
+                name='facility'
+                css={{ appearance: 'searchfield' }}
+                value={formData.facility.toString()}
+                onChange={handleInputChange}
+              >
+                {facilities.length > 0 &&
+                  facilities.map(({ id: fid, facilityName }) => (
+                    <option key={fid} value={fid}>
+                      {facilityName}
+                    </option>
+                  ))}
+              </Input>
+            </InputGroup>
 
-          <InputGroup>
-            <h4>Description</h4>
-            <Input
-              required
-              as='textarea'
-              name='description'
-              css={{ minHeight: 96 }}
-              value={formData.description}
-              onChange={handleInputChange}
-              disabled={!isEditing}
-            />
-          </InputGroup>
+            <InputGroup>
+              <label>Size</label>
+              <DesignerSizeControls>
+                <BaseInput
+                  type='number'
+                  min={1}
+                  max={600}
+                  value={zoneColumns}
+                  onChange={(e) => setZoneColumns(parseInt(e.target.value))}
+                />
+                <span>x</span>
+                <BaseInput
+                  type='number'
+                  min={1}
+                  max={600}
+                  value={zoneRows}
+                  onChange={(e) => setZoneRows(parseInt(e.target.value))}
+                />
+                <span>mts.</span>
+              </DesignerSizeControls>
+            </InputGroup>
 
-          <FormActions>
-            {isEditing ? (
+            <InputGroup>
+              <label>Shooting Positions</label>
+              <ReadOnlyInput value={lanes} disabled />
+            </InputGroup>
+
+            <InputGroup>
+              <label>Smart Devices</label>
+              <ReadOnlyInput value={targets} disabled />
+            </InputGroup>
+
+            <InputGroup>
+              <label>Smart Displays</label>
+              <ReadOnlyInput value={displays} disabled />
+            </InputGroup>
+
+            <FormActions>
               <Button color='purple' onClick={updateZone}>
                 Save
               </Button>
-            ) : (
-              <Button
-                color='green'
-                onClick={() => history.push(`/devices?zone=${id}`)}
-              >
-                Filter Devices By This Zone
+
+              <Button color='danger' onClick={() => setShowDeleteDialog(true)}>
+                Delete <TrashIcon />
               </Button>
-            )}
-          </FormActions>
-        </Form>
+            </FormActions>
+          </Form>
+          <DesignerContainer>
+            <Designer
+              ref={canvasRef}
+              width={800}
+              height={600}
+              columns={zoneColumns}
+              rows={zoneRows}
+              placedItems={zoneItems}
+              updatePlacedItems={(newItems) => {
+                setZoneItems(newItems);
+              }}
+            />
+          </DesignerContainer>
+        </SplitPane>
       </PageContent>
       <AlertDialog
         open={showDeleteDialog}
