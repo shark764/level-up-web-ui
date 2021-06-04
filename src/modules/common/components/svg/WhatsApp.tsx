@@ -1,12 +1,12 @@
 /* eslint-disable max-len */
 import * as React from 'react';
-import { IIcon } from '../Icons';
+import type { Icon } from './types';
 
 export function WhatsAppIcon({
   fill = 'white',
   width = 25,
   height = 25
-}: IIcon): React.ReactElement {
+}: Icon): React.ReactElement {
   return (
     <svg
       viewBox='-23 -21 682 682.667'

@@ -1026,14 +1026,14 @@ export const Facilities = () => {
                     boxShadow: 'none'
                   }
                 }),
-                singleValue: (provided, state) => ({
+                singleValue: (provided: any, state: any) => ({
                   ...provided,
                   opacity: state.isDisabled ? 0.5 : 1,
                   transition: 'opacity 300ms',
                   fontSize: 16,
                   color: '#9BB1D2'
                 }),
-                option: (provided, state) => ({
+                option: (provided: any, state: any) => ({
                   ...provided,
                   fontSize: 18,
                   color: state.isSelected ? '#5D5F83' : '#9BB1D2',

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Info from '@radix-ui/react-alert-dialog';
 import { styled } from 'stitches.config';
-import { CloseIcon } from './icons';
+import { CloseIcon } from './Icons';
 
 interface Props {
   open: boolean;

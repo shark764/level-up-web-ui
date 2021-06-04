@@ -19,10 +19,4 @@ export {
   ExclamationTriangleIcon
 } from '@modulz/radix-icons';
 
-export * from './icons';
-
-export interface IIcon {
-  fill?: string;
-  width?: number;
-  height?: number;
-}
+export * from './svg';
